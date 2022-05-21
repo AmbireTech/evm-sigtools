@@ -1,0 +1,93 @@
+@import '../../styles/themify.scss';
+
+:root {
+  @include themify(1) {
+    --onboard-connect-header-background: #{themeprop('formBackgroundColor')};
+    --onboard-connect-header-color: #{themeprop('whiteColor')};
+    --onboard-shadow-2: inset 0px -1px 0px rgba(255, 255, 255, 0.1);
+
+    --onboard-main-scroll-container-background: #{themeprop('formBackgroundColor')};
+
+    --onboard-connect-sidebar-background: #{themeprop('darkerComponentColor')};
+    --onboard-connect-sidebar-color: #{themeprop('whiteColor')};
+
+    --onboard-close-button-background: #{themeprop('darkerComponentColor')};
+    --onboard-close-button-color: #{themeprop('whiteColor')};
+
+    --onboard-wallet-button-background: #{themeprop('darkerComponentColor')};
+    --onboard-wallet-button-color: #{themeprop('whiteColor')};
+
+    --onboard-wallet-button-background-hover: #{themeprop('pillSelectedColor')};
+  }
+
+  --onboard-wallet-button-border-color: transparent;
+  --onboard-wallet-app-icon-border-color: transparent;
+}
+
+.signForm {
+  .mainError {
+    margin-bottom: 16px;
+  }
+
+  .signIntroText {
+    margin-bottom: 12px;
+  }
+
+  .connectedBar {
+    padding: 8px;
+    @include themify() {
+      background: themeprop('barComponentBackgroundColor');
+    }
+    border-radius: 8px;
+    display: flex;
+
+    span {
+      flex-grow: 1;
+      line-height: 26px;
+      @include themify() {
+        color: themeprop('barComponentColor');
+      }
+
+    }
+
+    button {
+      border-radius: 4px;
+      padding: 4px 16px;
+    }
+
+    .button-disconnect {
+      @include themify() {
+        background: themeprop('dangerColor');
+      }
+    }
+
+    .button-connect {
+      margin: auto;
+    }
+
+    .copyButton-feedback {
+      top: -2px;
+    }
+  }
+
+  .signatureResult-title {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 8px;
+    position: relative;
+
+    .copyHolder {
+      font-size: initial;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+  }
+
+  .signatureResult-signature {
+    font-family: Courier;
+    line-break: anywhere;
+  }
+}
+

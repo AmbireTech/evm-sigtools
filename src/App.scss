@@ -1,0 +1,404 @@
+@import './styles/themify.scss';
+
+.App {
+  height: 100%;
+}
+
+.row {
+  width: auto;
+}
+
+.pageContainer {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.mainContainer {
+  margin-top: 120px;
+  padding: 32px;
+  width: 560px;
+  min-height: fit-content;
+  @include themify() {
+    background: themeprop('formBackgroundColor');
+    background-image: linear-gradient(themeprop('formGradientAngle'), themeprop('formBackgroundColor') 0%, themeprop('formBackgroundColorGradientEnd') 100%);
+    color: themeprop('whiteColor');
+  }
+
+  border-radius: 16px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+
+  .containerTitle {
+    display: flex;
+
+    .containerTitle-text {
+      padding-left: 24px;
+
+      h1 {
+        font-size: 40px;
+        @include themify() {
+          color: themeprop('whiteColor');
+        }
+
+        font-weight: normal;
+        margin: 0;
+      }
+
+      div {
+        font-size: 18px;
+        @include themify() {
+          color: themeprop('subTitleColor');
+        }
+      }
+    }
+
+    padding-bottom: 12px;
+    @include themify() {
+      border-bottom: 2px solid themeprop('hrColor');
+    }
+    margin-bottom: 24px;
+  }
+
+  button {
+    @include themify() {
+      background: themeprop('buttonColor');
+      background-image: linear-gradient(90deg, themeprop('buttonColor') 0%, themeprop('buttonColorEnd') 100%);
+      color: themeprop('whiteColor');
+    }
+
+    border: 0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 16px;
+    cursor: pointer;
+
+    &:hover {
+      @include themify() {
+        background: lighten(themeprop('buttonColor'), 5%);
+        background-image: linear-gradient(90deg, lighten(themeprop('buttonColor'), 3%) 0%, lighten(themeprop('buttonColorEnd'), 3%) 100%);
+      }
+    }
+  }
+
+  .actionContainer {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+
+    span {
+      display: block;
+      padding: 2px;
+    }
+
+    button {
+      height: 48px;
+      margin: auto;
+      min-width: 30%;
+      font-size: 20px;
+      position: relative;
+
+      .spin {
+        margin-top: 2px;
+        font-size: 22px;
+        top: 50%;
+      }
+
+      &.loading {
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+.formSelector {
+  border-radius: 8px;
+  @include themify() {
+    background: themeprop('darkerComponentColor');
+  }
+
+  padding: 4px;
+  display: flex;
+  margin-bottom: 24px;
+
+  a {
+    flex-grow: 1;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: #727173;
+    text-transform: uppercase;
+    padding: 12px;
+
+    &:hover {
+      @include themify() {
+        color: themeprop('whiteColor');
+      }
+    }
+
+    &.selected {
+      border-radius: 4px;
+      @include themify() {
+        color: themeprop('whiteColor');
+        background: themeprop('pillSelectedColor');
+        background-image: linear-gradient(90deg, themeprop('pillSelectedColor') 0%, themeprop('pillSelectedColorEnd') 100%);
+      }
+    }
+  }
+}
+
+.notification {
+  border-radius: 4px;
+  border: 2px solid #6D44A3;
+  padding: 12px;
+
+  &.danger {
+    @include themify() {
+      border-color: themeprop('dangerColor');
+      background: mix(themeprop('dangerColor'), themeprop('formBackgroundColor'), 20%);
+      color: themeprop('dangerColor');
+    }
+
+  }
+
+  &.success {
+    @include themify() {
+      border-color: themeprop('successColor');
+      background: mix(themeprop('successColor'), themeprop('formBackgroundColor'), 20%);
+      color: themeprop('successColor')
+    }
+  }
+}
+
+.composedFormInputBlock {
+  padding: 20px 0;
+  display: flex;
+
+  label {
+    padding: 12px;
+    display: block;
+    min-width: 80px;
+    border-radius: 8px 0 0 8px;
+    @include themify() {
+      background: themeprop('darkerComponentColor');
+      color: mix(themeprop('whiteColor'), themeprop('formBackgroundColor'), 75%);
+    }
+  }
+
+  .formInput {
+    border-radius: 0 8px 8px 0;
+  }
+}
+
+.formInputBlock {
+  padding: 20px 0;
+  display: flex;
+
+  .inputContainer {
+    display: flex;
+  }
+
+  label {
+    @include themify() {
+      color: mix(themeprop('whiteColor'), themeprop('formBackgroundColor'), 75%);
+    }
+    display: block;
+    margin-bottom: 6px;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: scale(1) rotate(0deg);
+  }
+  to {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s infinite linear;
+}
+
+.messageInputContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .messageInputHeader {
+    border-radius: 8px 8px 0 0;
+    padding: 6px;
+
+    @include themify() {
+      background: themeprop('inputHeaderBackgroundColor');
+    }
+    display: flex;
+
+    a {
+      text-transform: capitalize;
+      @include themify() {
+        color: themeprop('inputHeaderPillColor');
+      }
+      text-decoration: none;
+      display: block;
+      padding: 8px 16px;
+
+      &:hover {
+        @include themify() {
+          color: themeprop('whiteColor');
+        }
+      }
+
+      &.selected {
+        @include themify() {
+          color: themeprop('whiteColor');
+          background: themeprop('inputHeaderPillBackgroundColor');
+        }
+        border-radius: 4px;
+      }
+    }
+
+    .errorIndicatorSpacer {
+      flex-grow: 1;
+    }
+
+    .errorIndicator {
+      cursor: pointer;
+      @include themify() {
+        color: themeprop('dangerColor');
+      }
+      text-align: right;
+      padding-top: 7px;
+      padding-right: 4px;
+      font-size: 20px;
+      display: block;
+    }
+
+  }
+
+  .formInput {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    width: auto;
+    resize: none;
+    min-height: 100px;
+
+    &::placeholder {
+      @include themify() {
+        color: themeprop('inputPlaceholderColor');
+      }
+    }
+
+    &:focus {
+      outline: 0;
+    }
+  }
+}
+
+.formInput {
+  @include themify() {
+    color: themeprop('whiteColor');
+    background: themeprop('inputBackgroundColor');
+  }
+
+  border-radius: 8px;
+  border: 0;
+
+  font-size: 16px;
+  padding: 12px;
+  width: 100%;
+  transition: 0.1s;
+  outline: 0 solid transparent;
+  outline-offset: -2px;
+
+  &:focus {
+    @include themify() {
+      //color: mix(themeprop('pillSelectedColor'), themeprop('inputBackgroundColor'));
+      outline: 2px solid themeprop('outlineColor');
+    }
+  }
+}
+
+
+.dropdown {
+  cursor: pointer;
+
+  .menu-item {
+    padding: 10px;
+
+    &:hover {
+      @include themify() {
+        background: themeprop('menuItemHoverColor');
+      }
+    }
+  }
+}
+
+footer {
+  text-align: center;
+  margin-top: 24px;
+  display: flex;
+  padding-bottom: 24px;
+
+  a {
+    display: flex;
+    @include themify() {
+      color: themeprop('whiteColor');
+    }
+
+    opacity: 0.5;
+    text-decoration: none;
+    padding: 0 16px;
+
+    img {
+      margin-top: -4px;
+      height: 24px;
+      margin-right: 4px;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+
+.tippy-box.danger{
+  @include themify() {
+    background: themeprop('dangerColor');
+  }
+
+  > .tippy-arrow {
+    &::before {
+      @include themify() {
+        border-left-color: themeprop('dangerColor');
+      }
+    }
+  }
+}
+
+.tippy-box.info{
+  @include themify() {
+    background: themeprop('pillSelectedColor');
+  }
+
+  > .tippy-arrow {
+    @include themify() {
+      color: themeprop('pillSelectedColor');
+    }
+    &::before {
+      @include themify() {
+        border-bottom-color: themeprop('pillSelectedColor');
+      }
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .mainContainer {
+    width: auto;
+    margin-top: 0;
+  }
+}

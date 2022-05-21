@@ -1,0 +1,32 @@
+@import '../../styles/variables.scss';
+
+.verifyForm {
+  .verifyFeedback {
+    text-align: center;
+    padding: 16px;
+  }
+
+  .verifyFeedback-icon {
+    font-size: 32px;
+  }
+
+  .verifyFeedback-text {
+    margin-top: 16px;
+  }
+
+  .formInput.formInput-signer {
+    height: 18px;
+    min-height: 18px;
+  }
+
+  .formInput.formInput-signature {
+    height: 54px;
+    min-height: 54px;
+  }
+
+  .formInput.formInput-message {
+    height: 162px;
+    min-height: 162px;
+  }
+}
+

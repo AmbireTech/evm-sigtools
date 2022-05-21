@@ -1,0 +1,83 @@
+@import '../../styles/themify.scss';
+
+.dropdown {
+  position: relative;
+  height: 42px;
+  @include themify() {
+    background-color: themeprop('inputBackgroundColor');
+  }
+  user-select: none;
+  width: 100%;
+  border-radius: 8px;
+
+  &.open {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .content {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75em;
+    padding: 0 15px 0 12px;
+
+    .icon {
+      height: 22px;
+      width: 22px;
+      background-size: cover;
+      border-radius: 100%;
+    }
+
+    .title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+    }
+
+    .separator {
+      flex-grow: 1;
+    }
+
+    .handle {
+
+      transition: 0.2s;
+
+      &.open {
+        transform: rotate(180deg);
+      }
+
+    }
+
+  }
+
+  .menu {
+    z-index: 97;
+    min-width: 100%;
+    position: absolute;
+    top: 42px;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    @include themify() {
+      background-color: themeprop('inputBackgroundColor');
+      box-shadow: themeprop('box-shadow');
+    }
+
+    overflow: hidden;
+
+    .item {
+      height: 65px;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0 15px;
+
+      .separator {
+        flex-grow: 1;
+      }
+    }
+  }
+}

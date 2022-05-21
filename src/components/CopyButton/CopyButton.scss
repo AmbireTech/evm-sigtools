@@ -1,0 +1,58 @@
+@import '../../styles/themify.scss';
+
+.copyButton {
+
+  display: inline-block;
+  position: relative;
+  height: 16px;
+  width: 16px;
+
+  /* This fires as soon as the element enters the DOM */
+  .copy-transition-enter {
+    opacity: 0;
+  }
+
+  /* This is where we can add the transition*/
+  .copy-transition-enter-active {
+    opacity: 1;
+  }
+
+  /* This fires as soon as the this.state.showList is false */
+  .copy-transition-exit {
+    opacity: 1;
+  }
+
+  /* fires as element leaves the DOM*/
+  .copy-transition-exit-active {
+    opacity: 0;
+  }
+
+  .copyButton-icon {
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+
+    &:hover {
+      @include themify() {
+        color: themeprop('$whiteColor');
+      }
+    }
+
+    transition: opacity 200ms ease-in-out;
+  }
+
+  .copyButton-feedback {
+    @include themify() {
+      color: themeprop('$whiteColor');
+    }
+    position: absolute;
+    text-align: right;
+    font-size: 12px;
+    transition: opacity 200ms ease-in-out;
+  }
+
+  .copyButton-placement-left {
+    right: 0;
+  }
+}
+

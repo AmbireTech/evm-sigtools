@@ -1,0 +1,10 @@
+@import "theme1";
+@import "theme2";
+@import "theme3";
+
+$themes: (
+        theme1: theme1(),
+        theme2 : theme2(),
+        theme3 : theme3(),
+);
+

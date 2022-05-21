@@ -1,0 +1,71 @@
+@function theme1() {
+  $backgroundColor: #48435f;
+  $backgroundColorGradientEnd: #2f2c45;
+  $backgroundGradientAngle: 180deg;
+
+  $formBackgroundColor: #1b1929;
+  $formBackgroundColorGradientEnd: #1b1929;
+  $formGradientAngle: 90deg;
+
+  $whiteColor: #E5E4E5;
+  $subTitleColor: #6c6576;
+
+  $hrColor: #29262f;
+
+  $successColor: #36E1E1;
+  $dangerColor: #ce1251;
+
+  $darkerAccent: #2b282f;
+
+  $pillSelectedColor: #6702f4;
+  $pillSelectedColorEnd: $pillSelectedColor;
+
+  $buttonColor: $pillSelectedColor;
+  $buttonColorEnd: $pillSelectedColorEnd;
+
+  $inputBackgroundColor: #140f1f;
+  $inputPlaceholderColor: mix($whiteColor, $inputBackgroundColor, 40%);
+  $darkerComponentColor: #0a0a14;
+  $inputHeaderPillColor: lighten($inputPlaceholderColor, 15%);
+  $inputHeaderPillBackgroundColor: lighten($inputBackgroundColor, 10%);
+  $inputHeaderBackgroundColor: $darkerComponentColor;
+  $outlineColor: $hrColor;
+
+  $barComponentBackgroundColor: $darkerComponentColor;
+  $barComponentColor: mix($whiteColor, $barComponentBackgroundColor, 50%);
+
+  $box-shadow: 0px 5px 10px 0 rgba(0, 0, 0, 0.25);
+
+  $menuItemHoverColor: mix($pillSelectedColor, $inputBackgroundColor, 50%);
+
+  @return (
+          backgroundColor : $backgroundColor,
+          backgroundColorGradientEnd : $backgroundColorGradientEnd,
+          backgroundGradientAngle: $backgroundGradientAngle,
+          formBackgroundColor : $formBackgroundColor,
+          formBackgroundColorGradientEnd : $formBackgroundColorGradientEnd,
+          formGradientAngle: $formGradientAngle,
+          whiteColor : $whiteColor,
+          subTitleColor : $subTitleColor,
+          hrColor : $hrColor,
+          successColor : $successColor,
+          dangerColor : $dangerColor,
+          darkerAccent : $darkerAccent,
+          pillSelectedColor : $pillSelectedColor,
+          pillSelectedColorEnd : $pillSelectedColorEnd,
+          buttonColor: $buttonColor,
+          buttonColorEnd: $buttonColorEnd,
+          barComponentBackgroundColor: $barComponentBackgroundColor,
+          barComponentColor: $barComponentColor,
+          inputPlaceholderColor : $inputPlaceholderColor,
+          inputHeaderBackgroundColor: $inputHeaderBackgroundColor,
+          inputBackgroundColor: $inputBackgroundColor,
+          darkerComponentColor : $darkerComponentColor,
+          inputHeaderPillColor : $inputHeaderPillColor,
+          inputHeaderPillBackgroundColor : $inputHeaderPillBackgroundColor,
+          outlineColor: $outlineColor,
+          box-shadow : $box-shadow,
+          menuItemHoverColor : $menuItemHoverColor,
+  );
+}
+
