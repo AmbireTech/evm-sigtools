@@ -6,7 +6,10 @@ import { getMessagePlaceholder, validateMessage } from '../../helpers/messages'
 
 import { init, useConnectWallet, useSetChain, useWallets } from '@web3-onboard/react'
 import walletConnectModule from '@web3-onboard/walletconnect'
+import ledgerModule from '@web3-onboard/ledger'
 import injectedModule from '@web3-onboard/injected-wallets'
+import trezorModule from '@web3-onboard/trezor'
+
 import { ethers } from 'ethers'
 import { useCallback, useEffect, useState } from 'react'
 import Tippy from '@tippyjs/react'
@@ -18,8 +21,11 @@ import { arrayify } from 'ethers/lib/utils'
 
 const walletConnect = walletConnectModule()
 const injected = injectedModule()
+const ledger = ledgerModule()
+const trezor = trezorModule()
+
 const webOnboard = init({
-  wallets: [injected, walletConnect],
+  wallets: [injected, walletConnect, trezor, ledger],
   chains: NETWORKS.map(n => ({
     id: ethers.utils.hexValue(n.chainId),
     label: n.name,
@@ -28,7 +34,7 @@ const webOnboard = init({
   })),
   appMetadata: {
     name: 'Signature Validator',
-    icon: '/img/signature-validator-logo.png',
+    icon: process.env.REACT_APP_SUBFOLDER_PATH + '/img/signature-validator-logo.png',
     description: 'Signature Validator tool',
     recommendedInjectedWallets: [{name: 'MetaMask', url: 'https://metamask.io'}]
   },
@@ -156,6 +162,18 @@ const SignForm = ({selectedForm}) => {
     onMessageChange(message)
   }, [message, onMessageChange, selectedMessageType])
 
+  // hack to access onboard css non exposed css properties
+  useEffect(() => {
+    if (connecting) {
+      if (document.getElementsByTagName('onboard-v2').length) {
+        const onboardContainer = document.getElementsByTagName('onboard-v2')[0]
+        let style = document.createElement('style')
+        style.innerHTML = '.wallet-button-styling .border-blue.background-transparent { background-color: var(--onboard-wallet-app-icon-background-color); }'
+        onboardContainer.shadowRoot.appendChild(style)
+      }
+    }
+  }, [connecting])
+
   if (selectedForm !== 'sign') return (<></>)
 
   return (
@@ -178,7 +196,8 @@ const SignForm = ({selectedForm}) => {
             ? (
               <>
                 <span>
-                  Connected with <b>{truncateAddress(connectedAccount.address)}</b> <CopyButton textToCopy={connectedAccount.address} />
+                  Connected with <b>{truncateAddress(connectedAccount.address)}</b> <CopyButton
+                  textToCopy={connectedAccount.address}/>
                 </span>
                 <button onClick={() => disconnect(wallet)} className='button-disconnect'>
                   Disconnect Wallet
@@ -187,9 +206,9 @@ const SignForm = ({selectedForm}) => {
               </>
             )
             : (
-                <button onClick={() => connect()} className='button-connect'>
-                  {connecting ? 'connecting' : 'connect wallet'}
-                </button>
+              <button onClick={() => connect()} className='button-connect'>
+                {connecting ? 'connecting' : 'connect wallet'}
+              </button>
             )
         }
       </div>
@@ -238,7 +257,7 @@ const SignForm = ({selectedForm}) => {
                   <div className='signatureResult-title'>
                     Message signature
                     <div className='copyHolder'>
-                      <CopyButton textToCopy={signature} feedbackPlacement={'left'} />
+                      <CopyButton textToCopy={signature} feedbackPlacement={'left'}/>
                     </div>
                   </div>
 

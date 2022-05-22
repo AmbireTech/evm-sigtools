@@ -16,7 +16,7 @@ function App() {
   const [theme, setTheme] = useState(0)
 
   const changeTheme = useCallback(() => {
-    if (theme + 1 > THEMES.length - 1 ) {
+    if (theme + 1 > THEMES.length - 1) {
       setTheme(0)
     } else {
       setTheme(theme + 1)
@@ -34,7 +34,7 @@ function App() {
           <div className={'row'}>
             <div className={'containerTitle'}>
               <div className={'containerTitle-logo'}>
-                <img src='/img/signature-validator-logo.png' alt=''/>
+                <img src='img/signature-validator-logo.png' alt=''/>
               </div>
               <div className={'containerTitle-text'}>
                 <h1>EVM SIGTOOLS</h1>
@@ -60,13 +60,13 @@ function App() {
           </div>
         </div>
         <footer>
-          <a href='https://wallet.ambire.com/' target='_blank' rel='noreferrer'><img src={'/img/ambireLogoMini.png'}
+          <a href='https://wallet.ambire.com/' target='_blank' rel='noreferrer'><img src={'img/ambireLogoMini.png'}
                                                                                      alt='ambire-logo'/>Powered by
             Ambire Wallet</a>
-          <a href='https://github.com/AmbireTech/' target='_blank' rel='noreferrer'><img src={'/img/githubLogoMini.svg'}
+          <a href='https://github.com/AmbireTech/' target='_blank' rel='noreferrer'><img src={'img/githubLogoMini.svg'}
                                                                                          alt='github-logo'/>@ambire/signature-validator</a>
-          <a href={'#dummyTodo'} onClick={changeTheme}><img src={'/img/ambireLogoMini.png'}
-                                                                                         alt='ambire-logo'/> Theme {theme + 1}</a>
+          <a href={'#dummyTodo'} onClick={changeTheme}><img src={'img/ambireLogoMini.png'}
+                                                            alt='ambire-logo'/> Theme {theme + 1}</a>
         </footer>
       </div>
     </div>

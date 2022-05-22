@@ -1,12 +1,12 @@
 const NETWORKS = [
   {
-    name: "Ethereum",
+    name: 'Ethereum',
     chainId: 1,
     rpc: 'https://main-light.eth.linkpool.io',
     token: 'ETH'
   },
   {
-    name: "Polygon",
+    name: 'Polygon',
     chainId: 137,
     rpc: 'https://polygon-rpc.com',
     token: 'MATIC'

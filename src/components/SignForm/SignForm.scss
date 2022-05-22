@@ -18,6 +18,7 @@
     --onboard-wallet-button-color: #{themeprop('whiteColor')};
 
     --onboard-wallet-button-background-hover: #{themeprop('pillSelectedColor')};
+	--onboard-wallet-app-icon-background-color : #{themeprop('whiteColor')};
   }
 
   --onboard-wallet-button-border-color: transparent;
@@ -47,7 +48,6 @@
       @include themify() {
         color: themeprop('barComponentColor');
       }
-
     }
 
     button {
@@ -82,7 +82,6 @@
       right: 0;
       top: 0;
     }
-
   }
 
   .signatureResult-signature {
