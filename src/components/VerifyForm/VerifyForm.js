@@ -131,7 +131,7 @@ const VerifyForm = ({selectedForm}) => {
     onMessageChange(message)
   }, [message, onMessageChange, selectedMessageType])
 
- // remove validation OK message
+  // remove validation OK message
   useEffect(() => {
     setIsValid(null)
   }, [signer, signature, message, selectedMessageType, selectedNetwork])
@@ -261,7 +261,7 @@ const VerifyForm = ({selectedForm}) => {
                onClick={() => {
                  setSelectedNetwork(n.chainId)
                }}>
-            <span className='networkIcon'><img src={`${process.env.REACT_APP_SUBFOLDER_PATH}${n.icon}`}/></span>
+            <span className='networkIcon'><img src={`${process.env.REACT_APP_SUBFOLDER_PATH}${n.icon}`} alt={n.name} /></span>
             <span className='networkName'>{n.name}</span>
           </div>
         ))}
