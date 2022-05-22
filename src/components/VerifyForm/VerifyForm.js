@@ -255,12 +255,15 @@ const VerifyForm = ({selectedForm}) => {
                   //return false
                 }}
       >
-        {NETWORKS.map(n => (
+        {NETWORKS.sort((a, b) => a.chainId === 1 ? -1 : a.name.localeCompare(b.name)).map(n => (
           <div key={n.chainId}
                className='menu-item'
                onClick={() => {
                  setSelectedNetwork(n.chainId)
-               }}>{n.name}</div>
+               }}>
+            <span className='networkIcon'><img src={`${process.env.REACT_APP_SUBFOLDER_PATH}${n.icon}`}/></span>
+            <span className='networkName'>{n.name}</span>
+          </div>
         ))}
       </DropDown>
     </div>
