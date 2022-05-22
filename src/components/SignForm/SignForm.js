@@ -313,7 +313,9 @@ const SignForm = ({selectedForm}) => {
                 {
                   MESSAGE_TYPES.filter(m => m.name !== 'finalDigest').map(m =>
                     (
-                      <Tippy content={m.tooltip} className={'info'} key={m.name}>
+                      <Tippy content={m.tooltip}
+                             className={'info top'}
+                             key={m.name}>
                         <a
                           key={m.name}
                           href={'#dummyTodo'}
@@ -332,8 +334,9 @@ const SignForm = ({selectedForm}) => {
                 {
                   (selectedMessageType === 'typedData') &&
                   <>
-                    <Tippy content='Click here to randomize a 712 message' placement={'left'}
-                           className={'info'}>
+                    <Tippy content='Click here to randomize a 712 message'
+                           placement={'left'}
+                           className={'info left'}>
                           <span className={`messageInputHeader-icon info diceRoller ${roll712 ? 'rolling' : ''}`}
                                 onClick={generate712Message}><FaDice/></span>
                     </Tippy>
@@ -342,7 +345,9 @@ const SignForm = ({selectedForm}) => {
                 {
                   messageError &&
                   <>
-                    <Tippy content={messageError} placement={'left'} className={'danger'}>
+                    <Tippy content={messageError}
+                           placement={'left'}
+                           className={'danger left'}>
                       <span className='messageInputHeader-icon danger'><TiWarningOutline/></span>
                     </Tippy>
                   </>

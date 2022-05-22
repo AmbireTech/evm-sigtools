@@ -378,7 +378,7 @@ footer {
     background: themeprop('dangerColor');
   }
 
-  > .tippy-arrow {
+  &.left > .tippy-arrow {
     &::before {
       @include themify() {
         border-left-color: themeprop('dangerColor');
@@ -392,14 +392,26 @@ footer {
     background: themeprop('pillSelectedColor');
   }
 
-  > .tippy-arrow {
+  &.top > .tippy-arrow {
     @include themify() {
       color: themeprop('pillSelectedColor');
     }
 
-    &::before {
+    ::before {
       @include themify() {
-        border-bottom-color: themeprop('pillSelectedColor');
+        border-left-color: themeprop('pillSelectedColor');
+      }
+    }
+  }
+
+  &.left > .tippy-arrow {
+    @include themify() {
+      color: themeprop('pillSelectedColor');
+    }
+
+    ::before {
+      @include themify() {
+        border-left-color: themeprop('pillSelectedColor');
       }
     }
   }

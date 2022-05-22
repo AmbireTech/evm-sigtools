@@ -162,7 +162,9 @@ const VerifyForm = ({selectedForm}) => {
     <div className='formInputBlock'>
       <div className='messageInputContainer'>
         <div className='messageInputHeader'>
-          <Tippy content='The address that signed the message' placement={'top'} className={'info'}>
+          <Tippy content='The address that signed the message'
+                 placement={'top'}
+                 className={'info top'}>
             <a
               href={'#dummyTodo'}
               className={'selected'}
@@ -172,7 +174,9 @@ const VerifyForm = ({selectedForm}) => {
             signerError &&
             <>
               <span className='messageInputHeader-spacer'/>
-              <Tippy content={signerError} placement={'left'} className={'danger'}>
+              <Tippy content={signerError}
+                     placement={'left'}
+                     className={'danger left'} >
                 <span className='messageInputHeader-icon danger'><TiWarningOutline/></span>
               </Tippy>
             </>
@@ -192,7 +196,9 @@ const VerifyForm = ({selectedForm}) => {
           {
             MESSAGE_TYPES.map(m =>
               (
-                <Tippy content={m.tooltip} className={'info'} key={m.name}>
+                <Tippy content={m.tooltip}
+                       className={'info top'}
+                       key={m.name}>
                   <a
                     key={m.name}
                     href={'#dummyTodo'}
@@ -207,7 +213,10 @@ const VerifyForm = ({selectedForm}) => {
             messageError &&
             <>
               <span className='messageInputHeader-spacer'/>
-              <Tippy content={messageError} placement={'left'} className={'danger'}>
+              <Tippy
+                content={messageError}
+                placement={'left'}
+                className={'danger left'} >
                 <span className='messageInputHeader-icon danger'><TiWarningOutline/></span>
               </Tippy>
             </>
@@ -223,7 +232,9 @@ const VerifyForm = ({selectedForm}) => {
     <div className='formInputBlock'>
       <div className='messageInputContainer'>
         <div className='messageInputHeader'>
-          <Tippy content='The signature to verify' placement={'top'} className={'info'}>
+          <Tippy content='The signature to verify'
+                 placement={'top'}
+                 className={'info top'}>
             <a
               href={'#dummyTodo'}
               className={'selected'}
@@ -233,7 +244,9 @@ const VerifyForm = ({selectedForm}) => {
             signatureError &&
             <>
               <span className='messageInputHeader-spacer'/>
-              <Tippy content={signatureError} placement={'left'} className={'danger'}>
+              <Tippy content={signatureError}
+                     placement={'left'}
+                     className={'danger left'}>
                 <span className='messageInputHeader-icon danger'><TiWarningOutline/></span>
               </Tippy>
             </>
