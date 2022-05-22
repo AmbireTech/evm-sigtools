@@ -43,7 +43,7 @@ const VerifyForm = ({selectedForm}) => {
   const onSignerChange = useCallback((val) => {
     setSigner(val)
     setSignerError(null)
-    if (val === '') return
+    if (!val) return
 
     const error = validateSigner(val)
     if (error) {
@@ -63,7 +63,7 @@ const VerifyForm = ({selectedForm}) => {
     setSignature(val)
     setSignatureError(null)
 
-    if (val === '') return
+    if (!val) return
 
     const error = validateSignature(val)
     if (error) {
@@ -76,7 +76,7 @@ const VerifyForm = ({selectedForm}) => {
     setMessage(val)
     setMessageError(null)
 
-    if (val === '') return true
+    if (!val) return true
 
     const error = validateMessage(val, selectedMessageType)
     if (error) {
@@ -171,9 +171,9 @@ const VerifyForm = ({selectedForm}) => {
           {
             signerError &&
             <>
-              <span className='errorIndicatorSpacer'/>
+              <span className='messageInputHeader-spacer'/>
               <Tippy content={signerError} placement={'left'} className={'danger'}>
-                <span className='errorIndicator'><TiWarningOutline/></span>
+                <span className='messageInputHeader-icon danger'><TiWarningOutline/></span>
               </Tippy>
             </>
           }
@@ -206,9 +206,9 @@ const VerifyForm = ({selectedForm}) => {
           {
             messageError &&
             <>
-              <span className='errorIndicatorSpacer'/>
+              <span className='messageInputHeader-spacer'/>
               <Tippy content={messageError} placement={'left'} className={'danger'}>
-                <span className='errorIndicator'><TiWarningOutline/></span>
+                <span className='messageInputHeader-icon danger'><TiWarningOutline/></span>
               </Tippy>
             </>
           }
@@ -232,9 +232,9 @@ const VerifyForm = ({selectedForm}) => {
           {
             signatureError &&
             <>
-              <span className='errorIndicatorSpacer'/>
+              <span className='messageInputHeader-spacer'/>
               <Tippy content={signatureError} placement={'left'} className={'danger'}>
-                <span className='errorIndicator'><TiWarningOutline/></span>
+                <span className='messageInputHeader-icon danger'><TiWarningOutline/></span>
               </Tippy>
             </>
           }

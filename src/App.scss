@@ -260,22 +260,30 @@
       }
     }
 
-    .errorIndicatorSpacer {
+    .messageInputHeader-spacer {
       flex-grow: 1;
     }
 
-    .errorIndicator {
+    .messageInputHeader-icon {
       cursor: pointer;
-      @include themify() {
-        color: themeprop('dangerColor');
-      }
       text-align: right;
       padding-top: 7px;
       padding-right: 4px;
       font-size: 20px;
       display: block;
-    }
 
+      &.danger {
+        @include themify() {
+          color: themeprop('dangerColor');
+        }
+      }
+
+      &.info {
+        @include themify() {
+          color: themeprop('infoColor');
+        }
+      }
+    }
   }
 
   .formInput {
@@ -365,7 +373,7 @@ footer {
 }
 
 
-.tippy-box.danger{
+.tippy-box.danger {
   @include themify() {
     background: themeprop('dangerColor');
   }
@@ -379,7 +387,7 @@ footer {
   }
 }
 
-.tippy-box.info{
+.tippy-box.info {
   @include themify() {
     background: themeprop('pillSelectedColor');
   }
@@ -388,6 +396,7 @@ footer {
     @include themify() {
       color: themeprop('pillSelectedColor');
     }
+
     &::before {
       @include themify() {
         border-bottom-color: themeprop('pillSelectedColor');

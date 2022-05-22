@@ -88,5 +88,16 @@
     font-family: Courier;
     line-break: anywhere;
   }
+
+  .diceRoller {
+    transform: rotate(0deg);
+
+    &.rolling {
+      transition: transform 350ms ease-in;
+      transform: rotate(360deg);
+    }
+  }
+
+
 }
 
