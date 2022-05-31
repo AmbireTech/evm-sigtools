@@ -4,7 +4,7 @@ import DropDown from '../../components/DropDown/DropDown'
 import { useCallback, useEffect, useState } from 'react'
 import { verifyMessage } from '@ambire/signature-validator'
 import { ethers, providers } from 'ethers'
-import { FaCheck, FaTimes } from 'react-icons/fa'
+import { FaCheck, FaTimes, FaInfo } from 'react-icons/fa'
 import './VerifyForm.scss'
 import { CgSpinnerTwoAlt } from 'react-icons/cg'
 import { scroller } from 'react-scroll'
@@ -151,6 +151,15 @@ const VerifyForm = ({selectedForm}) => {
   if (selectedForm !== 'verify') return (<></>)
 
   return (<div className='verifyForm'>
+
+    <div className='instructions'>
+      <span className='instructions-icon'>
+        <FaInfo />
+      </span>
+      <span className='instructions-text'>
+        Use this tool to verify the authenticity of Ethereum messages with the wallet that signed it
+      </span>
+    </div>
 
     {
       (error && !isLoaderDelayerActive) &&

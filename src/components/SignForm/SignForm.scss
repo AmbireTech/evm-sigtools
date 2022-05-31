@@ -18,7 +18,7 @@
     --onboard-wallet-button-color: #{themeprop('whiteColor')};
 
     --onboard-wallet-button-background-hover: #{themeprop('pillSelectedColor')};
-	--onboard-wallet-app-icon-background-color : #{themeprop('whiteColor')};
+    --onboard-wallet-app-icon-background-color: #{themeprop('whiteColor')};
   }
 
   --onboard-wallet-button-border-color: transparent;
@@ -30,11 +30,17 @@
     margin-bottom: 16px;
   }
 
-  .signIntroText {
-    margin-bottom: 12px;
+  .signFormConnect {
+    text-align: center;
+    flex-grow: 1;
+
+    .signFormConnect-text {
+      margin-bottom: 8px;
+    }
   }
 
   .connectedBar {
+    margin-top: 24px;
     padding: 8px;
     @include themify() {
       background: themeprop('barComponentBackgroundColor');

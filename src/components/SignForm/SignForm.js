@@ -13,7 +13,7 @@ import { ethers } from 'ethers'
 import { useCallback, useEffect, useState } from 'react'
 import { TiWarningOutline } from 'react-icons/ti'
 import { CgSpinnerTwoAlt } from 'react-icons/cg'
-import { FaDice } from 'react-icons/fa'
+import { FaDice, FaInfo } from 'react-icons/fa'
 
 import { arrayify } from 'ethers/lib/utils'
 
@@ -270,16 +270,22 @@ const SignForm = ({selectedForm}) => {
 
   return (
     <div className='signForm'>
+
+      <div className='instructions'>
+        <span className='instructions-icon'>
+          <FaInfo />
+        </span>
+        <span className='instructions-text'>
+          Use this tool to sign Ethereum messages with your wallet.<br />
+          Supported formats: human-like, hexadecimal and typed messages
+        </span>
+      </div>
+
       {
         (error && !isLoaderDelayerActive) &&
         <div className='notification danger mainError' id='error'>
           {error}
         </div>
-      }
-
-      {
-        !connectedAccount &&
-        <div className='signIntroText'>In order to sign messages, you need to be connected to a wallet</div>
       }
 
       <div className='connectedBar'>
@@ -298,9 +304,12 @@ const SignForm = ({selectedForm}) => {
               </>
             )
             : (
-              <button onClick={() => connect()} className='button-connect'>
-                {connecting ? 'connecting' : 'connect wallet'}
-              </button>
+              <div className='signFormConnect'>
+                <div className='signFormConnect-text'>In order to sign messages, you need to be connected to a wallet</div>
+                <button onClick={() => connect()} className='button-connect'>
+                  {connecting ? 'connecting' : 'connect wallet'}
+                </button>
+              </div>
             )
         }
       </div>

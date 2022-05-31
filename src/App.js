@@ -30,17 +30,17 @@ function App() {
   return (
     <div className='App'>
       <div className={'pageContainer'}>
+        <div className={'mainTitle'}>
+          <div className={'mainTitle-logo'}>
+            <img src='img/signature-validator-logo-flat.png' alt=''/>
+          </div>
+          <div className={'mainTitle-text'}>
+            <h1>EVM <span>SIGTOOLS</span></h1>
+            <div>Sign and verify regular, 721 and 1271 Ethereum signatures</div>
+          </div>
+        </div>
         <div className={'mainContainer'}>
           <div className={'row'}>
-            <div className={'containerTitle'}>
-              <div className={'containerTitle-logo'}>
-                <img src='img/signature-validator-logo.png' alt=''/>
-              </div>
-              <div className={'containerTitle-text'}>
-                <h1>EVM SIGTOOLS</h1>
-                <div>Sign and verify regular, 721 and 1271 signatures</div>
-              </div>
-            </div>
             <div className='formSelector'>
               <a href={'#sign'} className={selectedForm === 'sign' ? 'selected' : ''} onClick={(e) => {
                 setSelectedForm('sign')
