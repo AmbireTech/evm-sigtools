@@ -471,6 +471,9 @@ footer {
 @media (max-width: 650px) {
   .mainContainer {
     width: auto;
-    margin-top: 0;
+  }
+
+  .mainTitle {
+    padding-left: 16px;
   }
 }
