@@ -356,6 +356,10 @@
   }
 }
 
+.mainError {
+  margin: 16px 0;
+}
+
 .formInput {
   @include themify() {
     color: themeprop('whiteColor');

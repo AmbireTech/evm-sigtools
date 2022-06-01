@@ -163,7 +163,7 @@ const VerifyForm = ({selectedForm}) => {
 
     {
       (error && !isLoaderDelayerActive) &&
-      <div className='notification danger' id='error'>
+      <div className='notification danger mainError' id='error'>
         {error}
       </div>
     }
