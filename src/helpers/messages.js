@@ -17,7 +17,6 @@ const getMessagePlaceholder = (messageType) => {
 }
 
 const validateMessage = (message, messageType) => {
-
   if (messageType === 'hexMessage') {
     if (!ethers.utils.isHexString(message) || !(message.length % 2 === 0)) {
       return 'Invalid hexadecimal string'
@@ -48,7 +47,4 @@ const validateMessage = (message, messageType) => {
   }
 }
 
-export {
-  getMessagePlaceholder,
-  validateMessage
-}
+export { getMessagePlaceholder, validateMessage }
