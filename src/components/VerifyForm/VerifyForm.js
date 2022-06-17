@@ -162,9 +162,25 @@ const VerifyForm = ({ selectedForm }) => {
 
   useEffect(() => {
     const queryString = window.location.search
+
+    // to support UTF8 emojis and stuff
+    // https://developer.mozilla.org/en-US/docs/Web/API/btoa
+    const fromBinary = (binary) => {
+      const bytes = new Uint8Array(binary.length)
+      for (let i = 0; i < bytes.length; i++) {
+        bytes[i] = binary.charCodeAt(i)
+      }
+      const charCodes = new Uint16Array(bytes.buffer)
+      let result = ''
+      for (let i = 0; i < charCodes.length; i++) {
+        result += String.fromCharCode(charCodes[i])
+      }
+      return result
+    }
+
     if (queryString.startsWith('?verify=')) {
       try {
-        const strJson = atob(queryString.substring(8))
+        const strJson = fromBinary(atob(queryString.substring(8)))
         const parsed = JSON.parse(strJson)
 
         setSigner(parsed.signer)

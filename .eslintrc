@@ -37,7 +37,7 @@
   ],
   "plugins": ["simple-import-sort", "unused-imports"],
   "rules": {
-    // note you must disable the base rule as it can report incorrect errors
+    "jsx-quotes": [2, "prefer-single"],
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
     "react/prop-types" : "off",

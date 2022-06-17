@@ -243,14 +243,31 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
     const host = window.location.host
     const path = window.location.pathname
     const protocol = window.location.protocol
+
+    const toBinary = (string) => {
+      const codeUnits = new Uint16Array(string.length)
+      for (let i = 0; i < codeUnits.length; i++) {
+        codeUnits[i] = string.charCodeAt(i)
+      }
+      const charCodes = new Uint8Array(codeUnits.buffer)
+      let result = ''
+      for (let i = 0; i < charCodes.byteLength; i++) {
+        result += String.fromCharCode(charCodes[i])
+      }
+      return result
+    }
+
     const b64 = btoa(
-      JSON.stringify({
-        signer: connectedAccount.address,
-        message,
-        signature,
-        chainId: ethers.BigNumber.from(connectedChain.id).toNumber(),
-      })
+      toBinary(
+        JSON.stringify({
+          signer: connectedAccount.address,
+          message,
+          signature,
+          chainId: ethers.BigNumber.from(connectedChain.id).toNumber(),
+        })
+      )
     )
+
     setShareModalLink(`${protocol}//${host}${path}?verify=${b64}`)
   }, [connectedAccount, connectedChain, message, setShareModalLink, signature])
 
