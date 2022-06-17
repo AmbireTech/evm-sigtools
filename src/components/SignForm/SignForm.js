@@ -57,10 +57,10 @@ const truncateAddress = (addr) => {
 
 const SignForm = ({ selectedForm, setShareModalLink }) => {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
-  // maybe later
-  //const [{chains, connectedChain, settingChain}, setChain] = useSetChain()
+
   const connectedWallets = useWallets()
   const [connectedAccount, setConnectedAccount] = useState(null)
+  const [connectedChain, setConnectedChain] = useState(null)
 
   const [error, setError] = useState(null)
 
@@ -241,25 +241,30 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
 
   const onShare = useCallback(() => {
     const host = window.location.host
+    const path = window.location.pathname
     const protocol = window.location.protocol
     const b64 = btoa(
       JSON.stringify({
         signer: connectedAccount.address,
         message,
         signature,
+        chainId: ethers.BigNumber.from(connectedChain.id).toNumber(),
       })
     )
-    setShareModalLink(`${protocol}//${host}/verify?q=${b64}`)
-  }, [connectedAccount, message, setShareModalLink, signature])
+    setShareModalLink(`${protocol}//${host}${path}?verify=${b64}`)
+  }, [connectedAccount, connectedChain, message, setShareModalLink, signature])
 
   // only filter 1 main account
   useEffect(() => {
+    console.log(connectedWallets)
     if (!connectedWallets || connectedWallets.length === 0) {
       setConnectedAccount(null)
+      setConnectedChain(null)
       return
     }
     const firstWallet = connectedWallets[0]
     setConnectedAccount(firstWallet?.accounts[0])
+    setConnectedChain(firstWallet?.chains[0])
   }, [connectedWallets])
 
   useEffect(() => {
@@ -305,10 +310,11 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
       )}
 
       <div className='connectedBar'>
+        {connectedAccount && console.log(connectedAccount)}
         {connectedAccount ? (
           <>
             <span>
-              Connected with <b>{truncateAddress(connectedAccount.address)}</b>{' '}
+              Connected with <b>{truncateAddress(connectedAccount.address)}</b>
               <CopyButton textToCopy={connectedAccount.address} />
             </span>
             <button onClick={() => disconnect(wallet)} className='button-disconnect'>
@@ -393,7 +399,6 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
                       </div>
                     </div>
                   </div>
-
                   <span className='signatureResult-signature'>{signature}</span>
                 </div>
               </div>

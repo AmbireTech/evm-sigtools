@@ -34,7 +34,7 @@ function App() {
 
   useEffect(() => {
     const queryString = window.location.search
-    if (queryString.startsWith('?q=')) {
+    if (queryString.startsWith('?verify=')) {
       setSelectedForm('verify')
     }
   }, [])

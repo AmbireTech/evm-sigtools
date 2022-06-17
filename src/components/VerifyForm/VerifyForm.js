@@ -33,6 +33,8 @@ const VerifyForm = ({ selectedForm }) => {
 
   const [selectedNetwork, setSelectedNetwork] = useState(1)
 
+  const [isVerifyFocused, setIsVerifyFocused] = useState(false)
+
   // Form signer validation
   const validateSigner = (signerAddr) => {
     if (!ethers.utils.isAddress(signerAddr)) {
@@ -89,48 +91,51 @@ const VerifyForm = ({ selectedForm }) => {
   const verify = useCallback(() => {
     if (isVerifying || isLoaderDelayerActive) return
     setIsLoaderDelayerActive(true)
-    setTimeout(() => setIsLoaderDelayerActive(false), 250)
+    setTimeout(() => setIsLoaderDelayerActive(false), 400)
 
-    const signerError = validateSigner(signer)
-    const signatureError = validateSignature(signature)
-    const messageError = validateMessage(message, selectedMessageType)
+    //for UI
+    setTimeout(() => {
+      const signerError = validateSigner(signer)
+      const signatureError = validateSignature(signature)
+      const messageError = validateMessage(message, selectedMessageType)
 
-    if (signerError) setSignerError(signerError)
-    if (signatureError) setSignatureError(signatureError)
-    if (messageError) setMessageError(messageError)
+      if (signerError) setSignerError(signerError)
+      if (signatureError) setSignatureError(signatureError)
+      if (messageError) setMessageError(messageError)
 
-    if (signerError || signatureError || messageError) {
-      setError('Some inputs are incorrect')
-      return false
-    }
+      if (signerError || signatureError || messageError) {
+        setError('Some inputs are incorrect')
+        return false
+      }
 
-    setError(null)
-    setIsVerifying(true)
-    setIsValid(null)
+      setError(null)
+      setIsVerifying(true)
+      setIsValid(null)
 
-    const selectedNetworkData = NETWORKS.find((n) => n.chainId === selectedNetwork)
-    const provider = selectedNetworkData ? new providers.JsonRpcProvider(selectedNetworkData.rpc) : null
+      const selectedNetworkData = NETWORKS.find((n) => n.chainId === selectedNetwork)
+      const provider = selectedNetworkData ? new providers.JsonRpcProvider(selectedNetworkData.rpc) : null
 
-    verifyMessage({
-      provider,
-      signer,
-      signature,
-      message:
-        selectedMessageType === 'hexMessage'
-          ? ethers.utils.arrayify(message)
-          : selectedMessageType === 'typedData'
-          ? null
-          : message,
-      typedData: selectedMessageType === 'typedData' ? JSON.parse(message) : null,
-    })
-      .then((isValid) => {
-        setIsValid(isValid)
-        setIsVerifying(false)
+      verifyMessage({
+        provider,
+        signer,
+        signature,
+        message:
+          selectedMessageType === 'hexMessage'
+            ? ethers.utils.arrayify(message)
+            : selectedMessageType === 'typedData'
+            ? null
+            : message,
+        typedData: selectedMessageType === 'typedData' ? JSON.parse(message) : null,
       })
-      .catch((e) => {
-        setError('Verification Error: ' + e.message)
-        setIsVerifying(false)
-      })
+        .then((isValid) => {
+          setIsValid(isValid)
+          setIsVerifying(false)
+        })
+        .catch((e) => {
+          setError('Verification Error: ' + e.message)
+          setIsVerifying(false)
+        })
+    }, 400)
   }, [isLoaderDelayerActive, isVerifying, message, selectedMessageType, selectedNetwork, signature, signer])
 
   // "real time" message validation
@@ -157,15 +162,33 @@ const VerifyForm = ({ selectedForm }) => {
 
   useEffect(() => {
     const queryString = window.location.search
-    if (queryString.startsWith('?q=')) {
+    if (queryString.startsWith('?verify=')) {
       try {
-        const strJson = atob(queryString.substring(3))
+        const strJson = atob(queryString.substring(8))
         const parsed = JSON.parse(strJson)
 
         setSigner(parsed.signer)
         setMessage(parsed.message)
         setSignature(parsed.signature)
+        setSelectedNetwork(parsed.chainId || 1)
 
+        setTimeout(() => {
+          scroller.scrollTo('verifyButton', {
+            delay: 0,
+            duration: 750,
+            smooth: 'easeInOutQuart',
+          })
+        }, 100)
+        setIsVerifyFocused(null)
+        setTimeout(() => {
+          setIsVerifyFocused(true)
+          setTimeout(() => {
+            setIsVerifyFocused(false)
+            setTimeout(() => {
+              setIsVerifyFocused(null)
+            }, 750)
+          }, 500)
+        }, 500)
         // auto verify?
         // clear url?
       } catch (e) {
@@ -324,7 +347,13 @@ const VerifyForm = ({ selectedForm }) => {
       )}
 
       <div className='actionContainer'>
-        <button className={isVerifying || isLoaderDelayerActive ? 'loading' : ''} onClick={verify}>
+        <button
+          id='verifyButton'
+          className={`${isVerifying || isLoaderDelayerActive ? 'loading' : ''}${
+            isVerifyFocused ? ' focus' : isVerifyFocused === false ? ' unfocus' : ''
+          }`}
+          onClick={verify}
+        >
           {isVerifying || isLoaderDelayerActive ? <CgSpinnerTwoAlt className='spin' /> : <span>Verify</span>}
         </button>
       </div>
