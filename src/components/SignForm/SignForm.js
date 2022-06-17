@@ -8,7 +8,7 @@ import walletConnectModule from '@web3-onboard/walletconnect'
 import ledgerModule from '@web3-onboard/ledger'
 import injectedModule from '@web3-onboard/injected-wallets'
 import trezorModule from '@web3-onboard/trezor'
-// import gnosisModule from '@web3-onboard/gnosis'
+import gnosisModule from '@web3-onboard/gnosis'
 
 import { ethers } from 'ethers'
 import { useCallback, useEffect, useState } from 'react'
@@ -22,15 +22,16 @@ import CopyButton from '../CopyButton/CopyButton.js'
 import { getMessagePlaceholder, validateMessage } from '../../helpers/messages'
 
 import './SignForm.scss'
+import { MdIosShare } from 'react-icons/md'
 
 const walletConnect = walletConnectModule()
 const injected = injectedModule()
 const ledger = ledgerModule()
 const trezor = trezorModule() // needs url?
-// const gnosis = gnosisModule() not appearing...
+const gnosis = gnosisModule()
 
 init({
-  wallets: [injected, walletConnect, trezor, ledger],
+  wallets: [injected, walletConnect, trezor, ledger, gnosis],
   chains: NETWORKS.map((n) => ({
     id: ethers.utils.hexValue(n.chainId),
     label: n.name,
@@ -54,7 +55,7 @@ const truncateAddress = (addr) => {
   return addr.substr(0, 4) + '...' + addr.substr(-4)
 }
 
-const SignForm = ({ selectedForm }) => {
+const SignForm = ({ selectedForm, setShareModalLink }) => {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
   // maybe later
   //const [{chains, connectedChain, settingChain}, setChain] = useSetChain()
@@ -238,6 +239,19 @@ const SignForm = ({ selectedForm }) => {
     setMessage(msg)
   }, [connectedAccount, message])
 
+  const onShare = useCallback(() => {
+    const host = window.location.host
+    const protocol = window.location.protocol
+    const b64 = btoa(
+      JSON.stringify({
+        signer: connectedAccount.address,
+        message,
+        signature,
+      })
+    )
+    setShareModalLink(`${protocol}//${host}/verify?q=${b64}`)
+  }, [connectedAccount, message, setShareModalLink, signature])
+
   // only filter 1 main account
   useEffect(() => {
     if (!connectedWallets || connectedWallets.length === 0) {
@@ -272,12 +286,12 @@ const SignForm = ({ selectedForm }) => {
   if (selectedForm !== 'sign') return <></>
 
   return (
-    <div className="signForm">
-      <div className="instructions">
-        <span className="instructions-icon">
+    <div className='signForm'>
+      <div className='instructions'>
+        <span className='instructions-icon'>
           <FaInfo />
         </span>
-        <span className="instructions-text">
+        <span className='instructions-text'>
           Use this tool to sign Ethereum messages with your wallet.
           <br />
           Supported formats: human-like, hexadecimal and typed messages
@@ -285,26 +299,26 @@ const SignForm = ({ selectedForm }) => {
       </div>
 
       {error && !isLoaderDelayerActive && (
-        <div className="notification danger mainError" id="error">
+        <div className='notification danger mainError' id='error'>
           {error}
         </div>
       )}
 
-      <div className="connectedBar">
+      <div className='connectedBar'>
         {connectedAccount ? (
           <>
             <span>
               Connected with <b>{truncateAddress(connectedAccount.address)}</b>{' '}
               <CopyButton textToCopy={connectedAccount.address} />
             </span>
-            <button onClick={() => disconnect(wallet)} className="button-disconnect">
+            <button onClick={() => disconnect(wallet)} className='button-disconnect'>
               Disconnect Wallet
             </button>
           </>
         ) : (
-          <div className="signFormConnect">
-            <div className="signFormConnect-text">In order to sign messages, you need to be connected to a wallet</div>
-            <button onClick={() => connect()} className="button-connect">
+          <div className='signFormConnect'>
+            <div className='signFormConnect-text'>In order to sign messages, you need to be connected to a wallet</div>
+            <button onClick={() => connect()} className='button-connect'>
               {connecting ? 'connecting' : 'connect wallet'}
             </button>
           </div>
@@ -312,9 +326,9 @@ const SignForm = ({ selectedForm }) => {
       </div>
       {connectedAccount && (
         <div>
-          <div className="formInputBlock">
-            <div className="messageInputContainer">
-              <div className="messageInputHeader">
+          <div className='formInputBlock'>
+            <div className='messageInputContainer'>
+              <div className='messageInputHeader'>
                 {MESSAGE_TYPES.filter((m) => m.name !== 'finalDigest').map((m) => (
                   <Tippy content={m.tooltip} className={'info top'} key={m.name}>
                     <a
@@ -327,12 +341,12 @@ const SignForm = ({ selectedForm }) => {
                   </Tippy>
                 ))}
                 {(selectedMessageType === 'typedData' || messageError) && (
-                  <span className="messageInputHeader-spacer" />
+                  <span className='messageInputHeader-spacer' />
                 )}
 
                 {selectedMessageType === 'typedData' && (
                   <>
-                    <Tippy content="Click here to randomize a 712 message" placement={'left'} className={'info left'}>
+                    <Tippy content='Click here to randomize a 712 message' placement={'left'} className={'info left'}>
                       <span
                         className={`messageInputHeader-icon info diceRoller ${roll712 ? 'rolling' : ''}`}
                         onClick={generate712Message}
@@ -345,7 +359,7 @@ const SignForm = ({ selectedForm }) => {
                 {messageError && (
                   <>
                     <Tippy content={messageError} placement={'left'} className={'danger left'}>
-                      <span className="messageInputHeader-icon danger">
+                      <span className='messageInputHeader-icon danger'>
                         <TiWarningOutline />
                       </span>
                     </Tippy>
@@ -353,7 +367,7 @@ const SignForm = ({ selectedForm }) => {
                 )}
               </div>
               <textarea
-                className="formInput formInput-message"
+                className='formInput formInput-message'
                 placeholder={getMessagePlaceholder(selectedMessageType)}
                 value={message}
                 onChange={(e) => onMessageChange(e.currentTarget?.value)}
@@ -363,23 +377,31 @@ const SignForm = ({ selectedForm }) => {
           </div>
           {signature && (
             <>
-              <div className="notification success">
-                <div className="verifyFeedback">
-                  <div className="signatureResult-title">
+              <div className='notification success'>
+                <div className='verifyFeedback'>
+                  <div className='signatureResult-title'>
                     Message signature
-                    <div className="copyHolder">
-                      <CopyButton textToCopy={signature} feedbackPlacement={'left'} />
+                    <div className='signatureResult-actions'>
+                      <div className='copyHolder'>
+                        <CopyButton textToCopy={signature} feedbackPlacement={'left'} title='Copy' />
+                      </div>
+                      <div className='shareHolder' onClick={onShare}>
+                        <span className='actionIcon'>
+                          <MdIosShare />
+                        </span>
+                        <span className='actionTitle'>Share</span>
+                      </div>
                     </div>
                   </div>
 
-                  <span className="signatureResult-signature">{signature}</span>
+                  <span className='signatureResult-signature'>{signature}</span>
                 </div>
               </div>
             </>
           )}
-          <div className="actionContainer">
+          <div className='actionContainer'>
             <button className={isSigning || isLoaderDelayerActive ? 'loading' : ''} onClick={sign}>
-              {isSigning || isLoaderDelayerActive ? <CgSpinnerTwoAlt className="spin" /> : <span>Sign</span>}
+              {isSigning || isLoaderDelayerActive ? <CgSpinnerTwoAlt className='spin' /> : <span>Sign</span>}
             </button>
           </div>
         </div>

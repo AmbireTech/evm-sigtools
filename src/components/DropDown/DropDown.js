@@ -38,15 +38,15 @@ export default function DropDown({
 
   return (
     <div id={id} style={style} className={`dropdown ${className || ''} ${isMenuOpen ? 'open' : ''}`} ref={ref}>
-      <div className="content" onClick={() => setMenuOpen(!isMenuOpen)}>
-        <div className="title">{title}</div>
-        <div className="separator"></div>
+      <div className='content' onClick={() => setMenuOpen(!isMenuOpen)}>
+        <div className='title'>{title}</div>
+        <div className='separator'></div>
         <div className={`handle ${isMenuOpen ? 'open' : ''}`}>
           <BsChevronDown size={20}></BsChevronDown>
         </div>
       </div>
       {isMenuOpen && (
-        <div className="menu" ref={transitionRef} onClick={closeOnClick ? () => setMenuOpen(false) : null}>
+        <div className='menu' ref={transitionRef} onClick={closeOnClick ? () => setMenuOpen(false) : null}>
           {children}
         </div>
       )}

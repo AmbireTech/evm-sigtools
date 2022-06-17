@@ -211,7 +211,6 @@
       background: mix(themeprop('dangerColor'), themeprop('formBackgroundColor'), 20%);
       color: themeprop('dangerColor');
     }
-
   }
 
   &.success {
@@ -361,6 +360,7 @@
 }
 
 .formInput {
+  box-sizing: border-box;
   @include themify() {
     color: themeprop('whiteColor');
     background: themeprop('inputBackgroundColor');
@@ -442,6 +442,10 @@ footer {
   }
 }
 
+textarea {
+  font-family: Courier, monospace, Courier New;
+}
+
 .tippy-box.info {
   @include themify() {
     background: themeprop('pillSelectedColor');
@@ -479,5 +483,92 @@ footer {
 
   .mainTitle {
     padding-left: 16px;
+  }
+}
+
+
+#shareModal {
+  .overlay {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+
+    .modal {
+      @include themify() {
+        background: themeprop('formBackgroundColor');
+        background-image: linear-gradient(themeprop('formGradientAngle'), themeprop('formBackgroundColor') 0%, themeprop('formBackgroundColorGradientEnd') 100%);
+        color: themeprop('whiteColor');
+      }
+
+      min-width: 300px;
+      width: 50%;
+      margin: auto;
+      padding: 24px;
+
+      border-radius: 8px;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+
+      .modalHeader {
+        display: flex;
+
+        font-size: 24px;
+        margin-bottom: 24px;
+
+        .modalTitle {
+          flex-grow: 1;
+        }
+
+        .modalClose {
+          @include themify() {
+            color: mix(themeprop('whiteColor'), themeprop('formBackgroundColor'));
+          }
+          cursor: pointer;
+
+          &:hover {
+            @include themify() {
+              color: themeprop('whiteColor');
+            }
+          }
+        }
+      }
+
+      .modalLink {
+        gap: 16px;
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        .formInput {
+          text-overflow: ellipsis ellipsis;
+          padding-right: 100px;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+
+        .copyButton {
+          position: absolute;
+          right: 16px;
+          justify-content: right;
+          text-align: right;
+
+          .actionIcon {
+            margin-top: 4px;
+          }
+
+          .actionTitle {
+            font-size: 16px;
+          }
+        }
+      }
+
+      .instructions {
+        margin-top: 24px;
+      }
+
+    }
   }
 }

@@ -46,6 +46,9 @@
 
     span {
       flex-grow: 1;
+      display: flex;
+      align-items: center;
+      gap: 4px;
       line-height: 26px;
       @include themify() {
         color: themeprop('barComponentColor');
@@ -66,10 +69,6 @@
     .button-connect {
       margin: auto;
     }
-
-    .copyButton-feedback {
-      top: -2px;
-    }
   }
 
   .signatureResult-title {
@@ -78,16 +77,47 @@
     margin-bottom: 8px;
     position: relative;
 
-    .copyHolder {
+
+    .signatureResult-actions {
       font-size: initial;
       position: absolute;
       right: 0;
       top: 0;
+      display: flex;
+      gap: 4px;
+    }
+
+    .copyHolder, .shareHolder {
+      cursor: pointer;
+      background-color: rgba(0,0,0,0.2);
+      padding: 2px 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      min-width: 30px;
+
+      .copyButton {
+        height: auto;
+      }
+
+      &:hover {
+        background-color: rgba(0,0,0,0.1);
+      }
+
+      span.actionIcon {
+        font-size: 14px;
+        height: 14px;
+      }
+
+      span.actionTitle {
+        font-size: 13px;
+      }
     }
   }
 
   .signatureResult-signature {
-    font-family: Courier;
+    font-family: Courier, monospace, Courier New;
     line-break: anywhere;
   }
 

@@ -2,10 +2,28 @@
 
 .copyButton {
 
-  display: inline-block;
-  position: relative;
-  height: 16px;
-  width: 16px;
+  overflow: hidden;
+  display: flex;
+  height: 24px;
+
+  &.titled {
+    font-size: 13px;
+
+    .copyButton-feedback {
+      .actionTitle {
+        margin-top: 0;
+      }
+    }
+
+  }
+
+  span.copyButton-icon-holder {
+    position: static;
+  }
+
+  .actionIcon {
+    font-size: 16px;
+  }
 
   /* This fires as soon as the element enters the DOM */
   .copy-transition-enter {
@@ -27,10 +45,20 @@
     opacity: 0;
   }
 
-  .copyButton-icon {
-    position: absolute;
-    right: 0;
+  .copyButton-feedback {
+    display: flex;
+    gap: 2px;
+  }
+
+  .copyButton-icon-holder {
+    //position: absolute;
+    //left: 0;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+
+    font-size: 16px;
 
     &:hover {
       @include themify() {
@@ -41,18 +69,23 @@
     transition: opacity 200ms ease-in-out;
   }
 
+
+
   .copyButton-feedback {
     @include themify() {
       color: themeprop('$whiteColor');
     }
-    position: absolute;
-    text-align: right;
+    .actionTitle {
+      //position: absolute;
+      margin-top: 2px;
+      text-align: right;
+    }
     font-size: 12px;
     transition: opacity 200ms ease-in-out;
   }
 
   .copyButton-placement-left {
-    right: 0;
+    //right: 0;
   }
 }
 

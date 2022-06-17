@@ -1,5 +1,7 @@
 {
   "semi": false,
   "singleQuote": true,
+  "jsxSingleQuote": true,
+  "tsxSingleQuote": true,
   "printWidth": 120
 }

@@ -155,36 +155,56 @@ const VerifyForm = ({ selectedForm }) => {
     }
   }, [error, isLoaderDelayerActive])
 
+  useEffect(() => {
+    const queryString = window.location.search
+    if (queryString.startsWith('?q=')) {
+      try {
+        const strJson = atob(queryString.substring(3))
+        const parsed = JSON.parse(strJson)
+
+        setSigner(parsed.signer)
+        setMessage(parsed.message)
+        setSignature(parsed.signature)
+
+        // auto verify?
+        // clear url?
+      } catch (e) {
+        console.log('err', e)
+        setError('Could not decode link: ' + e.message)
+      }
+    }
+  }, [])
+
   if (selectedForm !== 'verify') return <></>
 
   return (
-    <div className="verifyForm">
-      <div className="instructions">
-        <span className="instructions-icon">
+    <div className='verifyForm'>
+      <div className='instructions'>
+        <span className='instructions-icon'>
           <FaInfo />
         </span>
-        <span className="instructions-text">
+        <span className='instructions-text'>
           Use this tool to verify the authenticity of Ethereum messages with the wallet that signed it
         </span>
       </div>
 
       {error && !isLoaderDelayerActive && (
-        <div className="notification danger mainError" id="error">
+        <div className='notification danger mainError' id='error'>
           {error}
         </div>
       )}
 
-      <div className="formInputBlock">
-        <div className="messageInputContainer">
-          <div className="messageInputHeader">
-            <Tippy content="The address that signed the message" placement={'top'} className={'info top'}>
+      <div className='formInputBlock'>
+        <div className='messageInputContainer'>
+          <div className='messageInputHeader'>
+            <Tippy content='The address that signed the message' placement={'top'} className={'info top'}>
               <a className={'selected'}>Signer</a>
             </Tippy>
             {signerError && (
               <>
-                <span className="messageInputHeader-spacer" />
+                <span className='messageInputHeader-spacer' />
                 <Tippy content={signerError} placement={'left'} className={'danger left'}>
-                  <span className="messageInputHeader-icon danger">
+                  <span className='messageInputHeader-icon danger'>
                     <TiWarningOutline />
                   </span>
                 </Tippy>
@@ -192,8 +212,8 @@ const VerifyForm = ({ selectedForm }) => {
             )}
           </div>
           <textarea
-            className="formInput formInput-signer"
-            placeholder="Signer address (0x....)"
+            className='formInput formInput-signer'
+            placeholder='Signer address (0x....)'
             value={signer}
             onChange={(e) => onSignerChange(e.currentTarget?.value)}
             spellCheck={false}
@@ -201,9 +221,9 @@ const VerifyForm = ({ selectedForm }) => {
         </div>
       </div>
 
-      <div className="formInputBlock">
-        <div className="messageInputContainer">
-          <div className="messageInputHeader">
+      <div className='formInputBlock'>
+        <div className='messageInputContainer'>
+          <div className='messageInputHeader'>
             {MESSAGE_TYPES.map((m) => (
               <Tippy content={m.tooltip} className={'info top'} key={m.name}>
                 <a
@@ -218,9 +238,9 @@ const VerifyForm = ({ selectedForm }) => {
             ))}
             {messageError && (
               <>
-                <span className="messageInputHeader-spacer" />
+                <span className='messageInputHeader-spacer' />
                 <Tippy content={messageError} placement={'left'} className={'danger left'}>
-                  <span className="messageInputHeader-icon danger">
+                  <span className='messageInputHeader-icon danger'>
                     <TiWarningOutline />
                   </span>
                 </Tippy>
@@ -228,7 +248,7 @@ const VerifyForm = ({ selectedForm }) => {
             )}
           </div>
           <textarea
-            className="formInput formInput-message"
+            className='formInput formInput-message'
             placeholder={getMessagePlaceholder(selectedMessageType)}
             value={message}
             onChange={(e) => onMessageChange(e.currentTarget?.value)}
@@ -237,17 +257,17 @@ const VerifyForm = ({ selectedForm }) => {
         </div>
       </div>
 
-      <div className="formInputBlock">
-        <div className="messageInputContainer">
-          <div className="messageInputHeader">
-            <Tippy content="The signature to verify" placement={'top'} className={'info top'}>
+      <div className='formInputBlock'>
+        <div className='messageInputContainer'>
+          <div className='messageInputHeader'>
+            <Tippy content='The signature to verify' placement={'top'} className={'info top'}>
               <a className={'selected'}>Signature</a>
             </Tippy>
             {signatureError && (
               <>
-                <span className="messageInputHeader-spacer" />
+                <span className='messageInputHeader-spacer' />
                 <Tippy content={signatureError} placement={'left'} className={'danger left'}>
-                  <span className="messageInputHeader-icon danger">
+                  <span className='messageInputHeader-icon danger'>
                     <TiWarningOutline />
                   </span>
                 </Tippy>
@@ -255,8 +275,8 @@ const VerifyForm = ({ selectedForm }) => {
             )}
           </div>
           <textarea
-            className="formInput formInput-signature"
-            placeholder="Hexadecimal signature (0x....)"
+            className='formInput formInput-signature'
+            placeholder='Hexadecimal signature (0x....)'
             value={signature}
             onChange={(e) => onSignatureChange(e.currentTarget?.value)}
             spellCheck={false}
@@ -264,9 +284,9 @@ const VerifyForm = ({ selectedForm }) => {
         </div>
       </div>
 
-      <div className="formInputBlock">
+      <div className='formInputBlock'>
         <DropDown
-          id="dd-networks"
+          id='dd-networks'
           title={
             selectedNetwork
               ? 'EIP-1271 Network: ' + NETWORKS.find((n) => n.chainId === selectedNetwork).name
@@ -280,15 +300,15 @@ const VerifyForm = ({ selectedForm }) => {
           {NETWORKS.sort((a, b) => (a.chainId === 1 ? -1 : a.name.localeCompare(b.name))).map((n) => (
             <div
               key={n.chainId}
-              className="menu-item"
+              className='menu-item'
               onClick={() => {
                 setSelectedNetwork(n.chainId)
               }}
             >
-              <span className="networkIcon">
+              <span className='networkIcon'>
                 <img src={`${process.env.REACT_APP_SUBFOLDER_PATH}${n.icon}`} alt={n.name} />
               </span>
-              <span className="networkName">{n.name}</span>
+              <span className='networkName'>{n.name}</span>
             </div>
           ))}
         </DropDown>
@@ -296,16 +316,16 @@ const VerifyForm = ({ selectedForm }) => {
 
       {isValid !== null && (
         <div className={`notification ${isValid ? 'success' : 'danger'}`}>
-          <div className="verifyFeedback">
-            <div className="verifyFeedback-icon">{isValid ? <FaCheck /> : <FaTimes />}</div>
-            <span className="verifyFeedback-text">Signature is {isValid ? 'Valid' : 'Invalid'}</span>
+          <div className='verifyFeedback'>
+            <div className='verifyFeedback-icon'>{isValid ? <FaCheck /> : <FaTimes />}</div>
+            <span className='verifyFeedback-text'>Signature is {isValid ? 'Valid' : 'Invalid'}</span>
           </div>
         </div>
       )}
 
-      <div className="actionContainer">
+      <div className='actionContainer'>
         <button className={isVerifying || isLoaderDelayerActive ? 'loading' : ''} onClick={verify}>
-          {isVerifying || isLoaderDelayerActive ? <CgSpinnerTwoAlt className="spin" /> : <span>Verify</span>}
+          {isVerifying || isLoaderDelayerActive ? <CgSpinnerTwoAlt className='spin' /> : <span>Verify</span>}
         </button>
       </div>
     </div>
