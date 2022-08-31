@@ -92,6 +92,12 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
     [selectedMessageType]
   )
 
+  // Hack to auto connect gnosis safe app as expected behavior
+  useEffect(() => {
+    connect({ autoSelect: 'Gnosis Safe' })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // wallet sign call
   const walletSign = useCallback(
     (message, messageType) => {
