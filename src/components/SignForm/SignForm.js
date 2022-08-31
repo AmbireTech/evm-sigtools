@@ -28,7 +28,7 @@ const walletConnect = walletConnectModule()
 const injected = injectedModule()
 const ledger = ledgerModule()
 const trezor = trezorModule() // needs url?
-const gnosis = gnosisModule()
+const gnosis = gnosisModule({ whitelistedDomains: [/./] })
 
 init({
   wallets: [injected, walletConnect, trezor, ledger, gnosis],
