@@ -21,6 +21,5 @@ jobs:
         with:
           personal_token: ${{ secrets.ACCESS_TOKEN }}
           publish_dir: ./build
-          external_repository: AmbireTech/evm-sigtools-public
-          publish_branch: main
+          publish_branch: gh-pages
           cname: evm-sigtools.ambire.com
