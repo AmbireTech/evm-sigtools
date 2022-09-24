@@ -16,7 +16,7 @@ import { TiWarningOutline } from 'react-icons/ti'
 import { CgSpinnerTwoAlt } from 'react-icons/cg'
 import { FaDice, FaInfo } from 'react-icons/fa'
 
-import { arrayify } from 'ethers/lib/utils'
+import { arrayify, hexlify } from 'ethers/lib/utils'
 
 import CopyButton from '../CopyButton/CopyButton.js'
 import { getMessagePlaceholder, validateMessage } from '../../helpers/messages'
@@ -100,7 +100,7 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
 
   // wallet sign call
   const walletSign = useCallback(
-    (message, messageType) => {
+    async (message, messageType) => {
       if (!wallet) {
         setError('No wallet connected')
         return
@@ -111,12 +111,25 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
         const signer = provider.getUncheckedSigner()
 
         if (messageType === 'humanMessage') {
+          if (wallet.label === 'Gnosis Safe') {
+            return (await wallet.provider.sdk.txs.signMessage(hexlify(ethers.utils.toUtf8Bytes(message)))).safeTxHash
+          }
           return signer.signMessage(message)
         } else if (messageType === 'hexMessage') {
+          if (wallet.label === 'Gnosis Safe') {
+            return (await wallet.provider.sdk.txs.signMessage(message)).safeTxHash
+          }
           return signer.signMessage(arrayify(message))
         } else if (messageType === 'typedData') {
           if (wallet.label === 'WalletConnect') {
             return wallet.provider.connector.signTypedData([connectedAccount.address, message])
+          } else if (wallet.label === 'Gnosis Safe') {
+            return (
+              await wallet.provider.sdk.txs.signMessage({
+                signType: 'eth_signTypedData_v4',
+                message,
+              })
+            ).safeTxHash
           } else {
             const parsedMessage = JSON.parse(message)
             return signer._signTypedData(parsedMessage.domain, parsedMessage.types, parsedMessage.message)
