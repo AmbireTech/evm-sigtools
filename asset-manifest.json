@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "https://evm-sigtools.ambire.com/static/css/main.4056083c.css",
-    "main.js": "https://evm-sigtools.ambire.com/static/js/main.45027376.js",
+    "main.js": "https://evm-sigtools.ambire.com/static/js/main.581e4a45.js",
     "static/js/3622.92d3eb23.chunk.js": "https://evm-sigtools.ambire.com/static/js/3622.92d3eb23.chunk.js",
     "static/js/6563.b3729d82.chunk.js": "https://evm-sigtools.ambire.com/static/js/6563.b3729d82.chunk.js",
     "static/js/1974.76ab9383.chunk.js": "https://evm-sigtools.ambire.com/static/js/1974.76ab9383.chunk.js",
@@ -113,7 +113,7 @@
     "static/media/triBg.svg": "https://evm-sigtools.ambire.com/static/media/triBg.8515cf7c3e14d9f1dd3b.svg",
     "index.html": "https://evm-sigtools.ambire.com/index.html",
     "main.4056083c.css.map": "https://evm-sigtools.ambire.com/static/css/main.4056083c.css.map",
-    "main.45027376.js.map": "https://evm-sigtools.ambire.com/static/js/main.45027376.js.map",
+    "main.581e4a45.js.map": "https://evm-sigtools.ambire.com/static/js/main.581e4a45.js.map",
     "3622.92d3eb23.chunk.js.map": "https://evm-sigtools.ambire.com/static/js/3622.92d3eb23.chunk.js.map",
     "1974.76ab9383.chunk.js.map": "https://evm-sigtools.ambire.com/static/js/1974.76ab9383.chunk.js.map",
     "680.8609e4d1.chunk.js.map": "https://evm-sigtools.ambire.com/static/js/680.8609e4d1.chunk.js.map",
@@ -164,6 +164,6 @@
   },
   "entrypoints": [
     "static/css/main.4056083c.css",
-    "static/js/main.45027376.js"
+    "static/js/main.581e4a45.js"
   ]
 }
