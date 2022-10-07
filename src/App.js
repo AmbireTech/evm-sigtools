@@ -8,7 +8,10 @@ import CopyButton from './components/CopyButton/CopyButton.js'
 const THEMES = ['theme1', 'theme2', 'theme3']
 
 function App() {
-  const [selectedForm, setSelectedForm] = useState('sign')
+  const queryString = window.location.search
+  const initialForm = queryString.startsWith('?verify=') ? 'verify' : 'sign'
+
+  const [selectedForm, setSelectedForm] = useState(initialForm)
 
   const [shareModalLink, setShareModalLink] = useState(null)
 
@@ -31,13 +34,6 @@ function App() {
   useEffect(() => {
     document.body.className = THEMES[theme]
   }, [theme])
-
-  useEffect(() => {
-    const queryString = window.location.search
-    if (queryString.startsWith('?verify=')) {
-      setSelectedForm('verify')
-    }
-  }, [])
 
   return (
     <div className='App'>

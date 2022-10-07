@@ -186,6 +186,7 @@ const VerifyForm = ({ selectedForm }) => {
         setSigner(parsed.signer)
         setMessage(parsed.message)
         setSignature(parsed.signature)
+        setSelectedMessageType(parsed.messageType)
         setSelectedNetwork(parsed.chainId || 1)
 
         setTimeout(() => {
