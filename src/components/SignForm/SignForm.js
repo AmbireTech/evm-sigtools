@@ -290,7 +290,7 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
     )
 
     setShareModalLink(`${protocol}//${host}${path}?verify=${b64}`)
-  }, [connectedAccount, connectedChain, message, setShareModalLink, signature])
+  }, [connectedAccount, connectedChain, message, setShareModalLink, signature, selectedMessageType])
 
   // only filter 1 main account
   useEffect(() => {
