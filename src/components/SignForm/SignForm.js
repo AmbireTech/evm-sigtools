@@ -94,9 +94,10 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
 
   // Hack to auto connect gnosis safe app as expected behavior
   useEffect(() => {
+    if (selectedForm !== 'sign') return
     connect({ autoSelect: 'Gnosis Safe' })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [selectedForm])
 
   // wallet sign call
   const walletSign = useCallback(
@@ -283,12 +284,13 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
           message,
           signature,
           chainId: ethers.BigNumber.from(connectedChain.id).toNumber(),
+          messageType: selectedMessageType,
         })
       )
     )
 
     setShareModalLink(`${protocol}//${host}${path}?verify=${b64}`)
-  }, [connectedAccount, connectedChain, message, setShareModalLink, signature])
+  }, [connectedAccount, connectedChain, message, setShareModalLink, signature, selectedMessageType])
 
   // only filter 1 main account
   useEffect(() => {
