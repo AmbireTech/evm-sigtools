@@ -44,7 +44,7 @@ function App() {
           </div>
           <div className={'mainTitle-text'}>
             <h1>
-              EVM <span>SIGTOOLS</span>
+              <span>SigTool</span> for EVM
             </h1>
             <div>Sign and verify regular, 721 and 1271 Ethereum signatures</div>
           </div>
