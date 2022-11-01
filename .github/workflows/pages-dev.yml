@@ -23,4 +23,4 @@ jobs:
           publish_dir: ./build
           publish_branch: gh-pages
           destination_dir: ./staging
-          cname: evm-sigtools.ambire.com
+          cname: sigtool.ambire.com

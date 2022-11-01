@@ -22,4 +22,4 @@ jobs:
           personal_token: ${{ secrets.ACCESS_TOKEN }}
           publish_dir: ./build
           publish_branch: gh-pages
-          cname: evm-sigtools.ambire.com
+          cname: sigtool.ambire.com

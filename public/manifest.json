@@ -1,6 +1,6 @@
 {
-  "short_name": "EVM Sigtools",
-  "name": "EVM Sigtools",
+  "short_name": "SigTool for EVM",
+  "name": "SigTool for EVM",
   "description": "Sign and verify regular, 721 and 1271 Ethereum signatures",
   "providedBy": {
     "name": "Ambire",
