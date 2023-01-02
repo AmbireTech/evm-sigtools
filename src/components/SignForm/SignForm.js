@@ -23,15 +23,24 @@ import { getMessagePlaceholder, validateMessage } from '../../helpers/messages'
 
 import './SignForm.scss'
 import { MdIosShare } from 'react-icons/md'
+import ambireWalletModule from '../../helpers/ambireWallet.js'
+
+const ambireSDK = new window.AmbireSDK({
+  walletUrl: 'http://localhost:3000',
+  dappName: 'sign-tool-dapp',
+  chainID: 1,
+  iframeElementId: 'ambire-sdk-iframe',
+})
 
 const walletConnect = walletConnectModule()
 const injected = injectedModule()
 const ledger = ledgerModule()
 const trezor = trezorModule() // needs url?
 const gnosis = gnosisModule({ whitelistedDomains: [/./] })
+const ambireWallet = ambireWalletModule({sdk: ambireSDK})
 
 init({
-  wallets: [injected, walletConnect, trezor, ledger, gnosis],
+  wallets: [injected, walletConnect, trezor, ledger, gnosis, ambireWallet],
   chains: NETWORKS.map((n) => ({
     id: ethers.utils.hexValue(n.chainId),
     label: n.name,
@@ -60,7 +69,7 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
 
   const connectedWallets = useWallets()
   const [connectedAccount, setConnectedAccount] = useState(null)
-  const [connectedChain, setConnectedChain] = useState(null)
+  const [connectedChain, setConnectedChain] = useState({id: 1})
 
   const [error, setError] = useState(null)
 
@@ -74,6 +83,17 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
   const [selectedMessageType, setSelectedMessageType] = useState(MESSAGE_TYPES[0].name)
 
   const [roll712, setRoll712] = useState(false)
+
+  ambireSDK.onLoginSuccess((data) => {
+    console.log(`AmbireSDK: login success`)
+
+    setConnectedAccount({
+      address: data.address,
+      ens: null,
+      balance: null
+    })
+    setConnectedChain({id: data.chainId})
+  })
 
   // update errors on message change
   const onMessageChange = useCallback(
@@ -92,12 +112,12 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
     [selectedMessageType]
   )
 
-  // Hack to auto connect gnosis safe app as expected behavior
-  useEffect(() => {
-    if (selectedForm !== 'sign') return
-    connect({ autoSelect: 'Gnosis Safe' })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedForm])
+  // // Hack to auto connect gnosis safe app as expected behavior
+  // useEffect(() => {
+  //   if (selectedForm !== 'sign') return
+  //   connect({ autoSelect: 'Gnosis Safe' })
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [selectedForm])
 
   // wallet sign call
   const walletSign = useCallback(
@@ -294,7 +314,6 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
 
   // only filter 1 main account
   useEffect(() => {
-    console.log(connectedWallets)
     if (!connectedWallets || connectedWallets.length === 0) {
       setConnectedAccount(null)
       setConnectedChain(null)
