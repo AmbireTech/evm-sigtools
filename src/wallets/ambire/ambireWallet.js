@@ -53,6 +53,19 @@ function ambireWallet() {
                     eth_chainId: async () => {
                         return Promise.resolve(connectedchain)
                     },
+                    personal_sign: async ({ params: [message, address] }) => {
+                        ambireSDK.openSignMessage('personal_sign', message)
+
+                        return new Promise((resolve, reject) => {
+                            ambireSDK.onMsgSigned((data) => {
+                                // TODO: return message signature here
+                                return resolve()
+                            })
+                            ambireSDK.onMsgRejected(() => {
+                                reject({ code: 4001, message: 'User rejected the request.' })
+                            })
+                        })
+                    },
                 })
 
                 return {
