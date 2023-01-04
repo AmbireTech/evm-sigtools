@@ -74,6 +74,12 @@ function ambireWallet() {
                     eth_sign: async ({ params: [address, message] }) => {
                         return handleSignMessage('eth_sign', message)
                     },
+                    eth_signTypedData: async ({ params: [address, typedData] }) => {
+                        return handleSignMessage('eth_signTypedData', typedData)
+                    },
+                    eth_signTypedData_v4: async ({ params: [address, typedData] }) => {
+                        return handleSignMessage('eth_signTypedData_v4', typedData)
+                    },
                 })
 
                 return {
