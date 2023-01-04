@@ -23,6 +23,21 @@ function ambireWallet() {
         })
     }
 
+    const handleSignMessage = async (signType, message) => {
+        ambireSDK.openSignMessage(signType, message)
+
+        return new Promise((resolve, reject) => {
+            ambireSDK.onMsgSigned((data) => {
+                // TODO: return message signature here
+                return resolve()
+            })
+
+            ambireSDK.onMsgRejected(() => {
+                reject({ code: 4001, message: 'User rejected the request.' })
+            })
+        })
+    }
+
     return () => {
         return {
             label: 'Ambire Wallet',
@@ -54,17 +69,10 @@ function ambireWallet() {
                         return Promise.resolve(connectedchain)
                     },
                     personal_sign: async ({ params: [message, address] }) => {
-                        ambireSDK.openSignMessage('personal_sign', message)
-
-                        return new Promise((resolve, reject) => {
-                            ambireSDK.onMsgSigned((data) => {
-                                // TODO: return message signature here
-                                return resolve()
-                            })
-                            ambireSDK.onMsgRejected(() => {
-                                reject({ code: 4001, message: 'User rejected the request.' })
-                            })
-                        })
+                        return handleSignMessage('personal_sign', message)
+                    },
+                    eth_sign: async ({ params: [address, message] }) => {
+                        return handleSignMessage('eth_sign', message)
                     },
                 })
 
