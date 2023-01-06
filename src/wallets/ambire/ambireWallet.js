@@ -17,8 +17,25 @@ function ambireWallet() {
         return new Promise((resolve, reject) => {
             ambireSDK.onLoginSuccess((data) => {
                 connectedAccounts = [data.address]
-                connectedchain = `0x${parseInt(connectedchain).toString(16)}`
+                connectedchain = `0x${parseInt(data.chainId).toString(16)}`
                 resolve(connectedAccounts)
+            })
+
+            ambireSDK.onAlreadyLoggedIn((data) => {
+                connectedAccounts = [data.address]
+                connectedchain = `0x${parseInt(data.chainId).toString(16)}`
+                resolve(connectedAccounts)
+            })
+
+            ambireSDK.onRegistrationSuccess((data) => {
+                connectedAccounts = [data.address]
+                connectedchain = `0x${parseInt(data.chainId).toString(16)}`
+                resolve(connectedAccounts)
+            })
+
+            ambireSDK.onActionRejected((data) => {
+                connectedAccounts = [data.address]
+                reject({ code: 4001, message: 'User rejected the request.' })
             })
         })
     }
