@@ -4,8 +4,9 @@ function ambireWallet() {
     const ambireSDK = new window.AmbireSDK({
         walletUrl: 'http://localhost:3000',
         dappName: 'sign-tool-dapp',
+        dappIconPath: 'https://sigtool.ambire.com/img/signature-validator-logo.png',
         chainID: 1,
-        iframeElementId: 'ambire-sdk-iframe',
+        wrapperElementId: 'ambire-sdk-wrapper',
     })
 
     let connectedAccounts = []
