@@ -1,13 +1,7 @@
 import { createEIP1193Provider } from '@web3-onboard/common'
 
-function ambireWallet() {
-    const ambireSDK = new window.AmbireSDK({
-        walletUrl: 'http://localhost:3000',
-        dappName: 'sign-tool-dapp',
-        dappIconPath: 'https://sigtool.ambire.com/img/signature-validator-logo.png',
-        chainID: 1,
-        wrapperElementId: 'ambire-sdk-wrapper',
-    })
+function ambireWallet(sdkParams) {
+    const ambireSDK = new window.AmbireSDK(sdkParams)
 
     let connectedAccounts = []
     let connectedchain = '0x1'
