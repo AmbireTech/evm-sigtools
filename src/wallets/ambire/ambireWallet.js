@@ -92,6 +92,24 @@ function ambireWallet(sdkParams) {
                     eth_signTypedData_v4: async ({ params: [address, typedData] }) => {
                         return handleSignMessage('eth_signTypedData_v4', typedData)
                     },
+                    eth_sendTransaction: async ({ params: [transactionObject] }) => {
+                        const txTo = transactionObject.to.toString()
+                        const txValue = transactionObject.value.toString()
+                        const txData = transactionObject.data ? transactionObject.data.toString() : '0x'
+
+                        ambireSDK.openSendTransaction(transactionObject)
+
+                        return new Promise((resolve, reject) => {
+                            ambireSDK.onTxnSent((data) => {
+                                // TODO:
+                                return resolve()
+                            })
+
+                            ambireSDK.onTxnRejected(() => {
+                                reject({ code: 4001, message: 'User rejected the request.' })
+                            })
+                        })
+                    },
                 })
 
                 return {
