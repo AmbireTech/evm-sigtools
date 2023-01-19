@@ -40,8 +40,7 @@ function ambireWallet(sdkParams) {
 
         return new Promise((resolve, reject) => {
             ambireSDK.onMsgSigned((data) => {
-                // TODO: return message signature here
-                return resolve()
+                return resolve(data.signature)
             })
 
             ambireSDK.onMsgRejected(() => {
@@ -101,8 +100,7 @@ function ambireWallet(sdkParams) {
 
                         return new Promise((resolve, reject) => {
                             ambireSDK.onTxnSent((data) => {
-                                // TODO:
-                                return resolve()
+                                return resolve(data.hash)
                             })
 
                             ambireSDK.onTxnRejected(() => {
