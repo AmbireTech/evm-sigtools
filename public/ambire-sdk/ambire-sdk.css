@@ -8,12 +8,12 @@
     border-radius: 12px;
     border: 0;
     pointer-events: auto;
-
-    width: 380px;
+  
+    width: 480px;
     height: 600px;
-}
-
-#ambire-sdk-wrapper {
+  }
+  
+  #ambire-sdk-wrapper {
     position: fixed;
     top: 0;
     left: 0;
@@ -24,10 +24,10 @@
     visibility: hidden;
     opacity: 0;
     pointer-events: auto;
-}
+  }
   
-#ambire-sdk-wrapper.visible {
+  #ambire-sdk-wrapper.visible {
     visibility: visible;
     pointer-events: none;
     opacity: 1;
-}
+  }

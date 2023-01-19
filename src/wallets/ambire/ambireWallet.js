@@ -53,7 +53,7 @@ function ambireWallet(sdkParams) {
     return () => {
         return {
             label: 'Ambire Wallet',
-            getIcon: async () => (await import('./ambireLogoMini.png')).default,
+            getIcon: async () => (await import('./ambire.png')).default,
             getInterface: async ({chains, EventEmitter}) => {
                 const emitter = new EventEmitter()
 
