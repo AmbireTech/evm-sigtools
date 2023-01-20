@@ -23,14 +23,14 @@ import { getMessagePlaceholder, validateMessage } from '../../helpers/messages'
 
 import './SignForm.scss'
 import { MdIosShare } from 'react-icons/md'
-import ambireWalletModule from '../../wallets/ambire/ambireWallet'
+import { Web3OnboardAmbireWalletModule } from 'ambire-wallet-sdk'
 
 const walletConnect = walletConnectModule()
 const injected = injectedModule()
 const ledger = ledgerModule()
 const trezor = trezorModule() // needs url?
 const gnosis = gnosisModule({ whitelistedDomains: [/./] })
-const ambireWallet = ambireWalletModule({
+const ambireWallet = Web3OnboardAmbireWalletModule({
   walletUrl: 'http://localhost:3000',
   dappName: 'sign-tool-dapp',
   dappIconPath: 'https://sigtool.ambire.com/img/signature-validator-logo.png',
