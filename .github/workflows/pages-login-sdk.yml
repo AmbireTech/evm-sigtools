@@ -1,0 +1,26 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - feat/ambire-login-sdk
+permissions: 
+  contents: write
+jobs:
+  build-and-deploy:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install and Build staging
+        run: npm ci --legacy-peer-deps && npm run build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: ./build
+          publish_branch: gh-pages
+          destination_dir: ./login-sdk
+          cname: sigtool.ambire.com

@@ -31,8 +31,8 @@ const ledger = ledgerModule()
 const trezor = trezorModule() // needs url?
 const gnosis = gnosisModule({ whitelistedDomains: [/./] })
 const ambireWallet = Web3OnboardAmbireWalletModule({
-  walletUrl: 'http://localhost:3000',
-  dappName: 'sign-tool-dapp',
+  walletUrl: 'https://wallet.ambire.com/',
+  dappName: 'SigTool SDK Demo',
   dappIconPath: 'https://sigtool.ambire.com/img/signature-validator-logo.png',
   chainID: 1,
   wrapperElementId: 'ambire-sdk-wrapper',
