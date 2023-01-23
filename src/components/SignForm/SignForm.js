@@ -31,7 +31,7 @@ const ledger = ledgerModule()
 const trezor = trezorModule() // needs url?
 const gnosis = gnosisModule({ whitelistedDomains: [/./] })
 const ambireWallet = Web3OnboardAmbireWalletModule({
-  walletUrl: 'https://wallet.ambire.com/',
+  walletUrl: 'https://wallet.ambire.com/sdk-login',
   dappName: 'SigTool SDK Demo',
   dappIconPath: 'https://sigtool.ambire.com/img/signature-validator-logo.png',
   chainID: 1,
@@ -68,7 +68,7 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
 
   const connectedWallets = useWallets()
   const [connectedAccount, setConnectedAccount] = useState(null)
-  const [connectedChain, setConnectedChain] = useState({id: 1})
+  const [connectedChain, setConnectedChain] = useState(null)
 
   const [error, setError] = useState(null)
 
@@ -100,12 +100,12 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
     [selectedMessageType]
   )
 
-  // // Hack to auto connect gnosis safe app as expected behavior
-  // useEffect(() => {
-  //   if (selectedForm !== 'sign') return
-  //   connect({ autoSelect: 'Gnosis Safe' })
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [selectedForm])
+  // Hack to auto connect gnosis safe app as expected behavior
+  useEffect(() => {
+    if (selectedForm !== 'sign') return
+    connect({ autoSelect: 'Gnosis Safe' })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedForm])
 
   // wallet sign call
   const walletSign = useCallback(
