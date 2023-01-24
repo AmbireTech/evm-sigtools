@@ -2,7 +2,6 @@
   "name": "evm-sigtools",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://sigtool.ambire.com/login-sdk",
   "dependencies": {
     "@ambire/signature-validator": "^1.0.3",
     "@craco/craco": "^6.4.3",
