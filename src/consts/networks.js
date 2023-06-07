@@ -2,7 +2,7 @@ const NETWORKS = [
   {
     name: 'Ethereum',
     chainId: 1,
-    rpc: 'https://main-light.eth.linkpool.io',
+    rpc: 'https://rpc.ankr.com/eth',
     token: 'ETH',
     icon: '/img/networks/ethereum.png',
   },
