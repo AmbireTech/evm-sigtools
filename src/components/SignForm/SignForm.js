@@ -24,10 +24,23 @@ import { getMessagePlaceholder, validateMessage } from '../../helpers/messages'
 import './SignForm.scss'
 import { MdIosShare } from 'react-icons/md'
 
-const walletConnect = walletConnectModule()
+const WC_PROJECT_ID = 'd98522bddb36e73acae903da02b45fd1'
+
+const walletConnect = walletConnectModule({
+  projectId: WC_PROJECT_ID,
+  requiredChains: [],
+  optionalChains: NETWORKS.map((n) => n.chainId),
+  dappUrl: 'https://sigtool.ambire.com/',
+})
+
 const injected = injectedModule()
-const ledger = ledgerModule()
-const trezor = trezorModule() // needs url?
+const ledger = ledgerModule({
+  projectId: WC_PROJECT_ID,
+})
+const trezor = trezorModule({
+  appUrl: 'https://sigtool.ambire.com/',
+  email: 'contactus@ambire.com',
+})
 const gnosis = gnosisModule({ whitelistedDomains: [/./] })
 
 init({
@@ -92,10 +105,9 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
     [selectedMessageType]
   )
 
-  // Hack to auto connect gnosis safe app as expected behavior
   useEffect(() => {
     if (selectedForm !== 'sign') return
-    connect({ autoSelect: 'Gnosis Safe' })
+    connect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedForm])
 
