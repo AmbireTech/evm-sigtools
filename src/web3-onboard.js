@@ -9,18 +9,18 @@ import trezorModule from '@web3-onboard/trezor'
 import gnosisModule from '@web3-onboard/gnosis'
 const WC_PROJECT_ID = 'd98522bddb36e73acae903da02b45fd1'
 
-const walletConnect = walletConnectModule({
+const WC_OPTIONS = {
   projectId: WC_PROJECT_ID,
-  requiredChains: [],
+  requiredChains: [1],
   additionalRequiredMethods: ['eth_signTypedData_v4'],
   optionalChains: NETWORKS.map((n) => n.chainId),
   dappUrl: 'https://sigtool.ambire.com/',
-})
+}
+
+const walletConnect = walletConnectModule(WC_OPTIONS)
 
 const injected = injectedModule()
-const ledger = ledgerModule({
-  projectId: WC_PROJECT_ID,
-})
+const ledger = ledgerModule(WC_OPTIONS)
 const trezor = trezorModule({
   appUrl: 'https://sigtool.ambire.com/',
   email: 'contactus@ambire.com',
