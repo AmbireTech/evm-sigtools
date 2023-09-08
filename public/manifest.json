@@ -1,12 +1,12 @@
 {
   "short_name": "SigTool for EVM",
   "name": "SigTool for EVM",
-  "description": "Sign and verify regular, 721 and 1271 Ethereum signatures",
+  "description": "Sign and verify regular, 721, 1271 and 6492 Ethereum signatures",
   "providedBy": {
     "name": "Ambire",
     "url": "https://www.ambire.com/"
   },
-  "networks":[],
+  "networks": [],
   "icons": [
     {
       "src": "favicon.ico",
