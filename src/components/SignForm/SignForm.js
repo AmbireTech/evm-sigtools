@@ -17,6 +17,7 @@ import { getMessagePlaceholder, validateMessage } from '../../helpers/messages'
 
 import './SignForm.scss'
 import { MdIosShare } from 'react-icons/md'
+import { useWeb3Onboard } from '@web3-onboard/react/dist/context'
 
 const truncateAddress = (addr) => {
   return addr.substr(0, 4) + '...' + addr.substr(-4)
@@ -30,12 +31,14 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
 
   const connectedWallets = useWallets()
   const [connectedAccount, setConnectedAccount] = useState(null)
+  const { state } = useWeb3Onboard()
 
   const [error, setError] = useState(null)
 
   const [isSigning, setIsSigning] = useState(false)
   const [isLoaderDelayerActive, setIsLoaderDelayerActive] = useState(false)
   const [signature, setSignature] = useState(null)
+  const [hasDisconnected, setHasDiconnected] = useState(false)
 
   const [message, setMessage] = useState('')
   const [messageError, setMessageError] = useState(null)
@@ -64,10 +67,26 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
   useEffect(() => {
     if (!wallet?.provider) {
       provider = null
+
+      const currentState = state.get()
+
+      // If the user has disconnected from safe once we should not autoconnect him again
+      if (selectedForm !== 'sign' || hasDisconnected || !currentState) return
+
+      const availableWalletLabels = currentState.walletModules.map((module) => module.label)
+
+      // Check if Safe is available, because autoselecting will fail if it's not
+      if (!availableWalletLabels.includes('Safe')) return
+
+      connect({
+        autoSelect: {
+          label: 'Safe',
+        },
+      })
     } else {
       provider = new ethers.providers.Web3Provider(wallet.provider, 'any')
     }
-  }, [wallet])
+  }, [wallet, connect, selectedForm, hasDisconnected, state])
 
   // wallet sign call
   const walletSign = useCallback(
@@ -81,19 +100,19 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
         const signer = provider.getUncheckedSigner()
 
         if (messageType === 'humanMessage') {
-          if (wallet.label === 'Gnosis Safe') {
-            return (await provider.sdk.txs.signMessage(hexlify(ethers.utils.toUtf8Bytes(message)))).safeTxHash
+          if (wallet.label === 'Safe') {
+            return (await wallet.instance.txs.signMessage(hexlify(ethers.utils.toUtf8Bytes(message)))).safeTxHash
           }
           return signer.signMessage(message)
         } else if (messageType === 'hexMessage') {
-          if (wallet.label === 'Gnosis Safe') {
-            return (await provider.sdk.txs.signMessage(message)).safeTxHash
+          if (wallet.label === 'Safe') {
+            return (await wallet.instance.txs.signMessage(message)).safeTxHash
           }
           return signer.signMessage(arrayify(message))
         } else if (messageType === 'typedData') {
-          if (wallet.label === 'Gnosis Safe') {
+          if (wallet.label === 'Safe') {
             return (
-              await provider.sdk.txs.signMessage({
+              await wallet.instance.txs.signMessage({
                 signType: 'eth_signTypedData_v4',
                 message,
               })
@@ -321,7 +340,13 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
               Connected with <b>{truncateAddress(connectedAccount.address)}</b>
               <CopyButton textToCopy={connectedAccount.address} />
             </span>
-            <button onClick={() => disconnect(wallet)} className='button-disconnect'>
+            <button
+              onClick={() => {
+                disconnect(wallet)
+                setHasDiconnected(true)
+              }}
+              className='button-disconnect'
+            >
               Disconnect Wallet
             </button>
           </>
