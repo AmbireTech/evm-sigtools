@@ -76,11 +76,11 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
       const availableWalletLabels = currentState.walletModules.map((module) => module.label)
 
       // Check if Safe is available, because autoselecting will fail if it's not
-      if (!availableWalletLabels.includes('Safe')) return
+      if (!availableWalletLabels.includes('Gnosis Safe')) return
 
       connect({
         autoSelect: {
-          label: 'Safe',
+          label: 'Gnosis Safe',
         },
       })
     } else {
@@ -100,23 +100,34 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
         const signer = provider.getUncheckedSigner()
 
         if (messageType === 'humanMessage') {
-          if (wallet.label === 'Safe') {
-            return (await wallet.instance.txs.signMessage(hexlify(ethers.utils.toUtf8Bytes(message)))).safeTxHash
+          if (wallet.label === 'Gnosis Safe') {
+            return (await wallet.provider.sdk.txs.signMessage(hexlify(ethers.utils.toUtf8Bytes(message)))).safeTxHash
+            // @TODO: implement on update @web3-onboard/gnosis > @2.2
+            //   return (await wallet.instance.txs.signMessage(hexlify(ethers.utils.toUtf8Bytes(message)))).safeTxHash
           }
           return signer.signMessage(message)
         } else if (messageType === 'hexMessage') {
-          if (wallet.label === 'Safe') {
-            return (await wallet.instance.txs.signMessage(message)).safeTxHash
+          if (wallet.label === 'Gnosis Safe') {
+            return (await wallet.provider.sdk.txs.signMessage(message)).safeTxHash
+            // @TODO: implement on update @web3-onboard/gnosis > @2.2
+            //   return (await wallet.instance.txs.signMessage(message)).safeTxHash
           }
           return signer.signMessage(arrayify(message))
         } else if (messageType === 'typedData') {
-          if (wallet.label === 'Safe') {
+          if (wallet.label === 'Gnosis Safe') {
             return (
-              await wallet.instance.txs.signMessage({
+              await wallet.provider.sdk.txs.signMessage({
                 signType: 'eth_signTypedData_v4',
                 message,
               })
             ).safeTxHash
+            // @TODO: implement on update @web3-onboard/gnosis > @2.2
+            // return (
+            //   await wallet.instance.txs.signMessage({
+            //     signType: 'eth_signTypedData_v4',
+            //     message,
+            //   })
+            // ).safeTxHash
           } else {
             const parsedMessage = JSON.parse(message)
             return signer._signTypedData(parsedMessage.domain, parsedMessage.types, parsedMessage.message)
