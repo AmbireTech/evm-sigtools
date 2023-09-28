@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ambire/login-sdk-web3-onboard": "^0.1.1",
     "@ambire/signature-validator": "^1.0.3",
     "@craco/craco": "^6.4.3",
     "@testing-library/jest-dom": "^5.16.4",
@@ -23,8 +24,7 @@
     "react-icons": "^4.3.1",
     "react-scripts": "5.0.1",
     "react-scroll": "^1.8.7",
-    "react-transition-group": "^4.4.2",
-    "ambire-wallet-sdk": "AmbireTech/wallet-login-sdk#8bae4056fdba050df449362aff9134aa2bbd6f25"
+    "react-transition-group": "^4.4.2"
   },
   "scripts": {
     "start": "NODE_ENV=development craco start",
