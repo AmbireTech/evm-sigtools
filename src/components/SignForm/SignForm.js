@@ -1,14 +1,8 @@
-import NETWORKS from '../../consts/networks.js'
 import MESSAGE_TYPES from '../../consts/messageTypes'
 
 import Tippy from '@tippyjs/react'
 
-import { init, useConnectWallet, useWallets } from '@web3-onboard/react'
-import walletConnectModule from '@web3-onboard/walletconnect'
-import ledgerModule from '@web3-onboard/ledger'
-import injectedModule from '@web3-onboard/injected-wallets'
-import trezorModule from '@web3-onboard/trezor'
-import gnosisModule from '@web3-onboard/gnosis'
+import { useConnectWallet, useSetChain, useWallets } from '@web3-onboard/react'
 
 import { ethers } from 'ethers'
 import { useCallback, useEffect, useState } from 'react'
@@ -23,59 +17,28 @@ import { getMessagePlaceholder, validateMessage } from '../../helpers/messages'
 
 import './SignForm.scss'
 import { MdIosShare } from 'react-icons/md'
-import { AmbireWalletModule } from '@ambire/login-sdk-web3-onboard'
-
-const walletConnect = walletConnectModule()
-const injected = injectedModule()
-const ledger = ledgerModule()
-const trezor = trezorModule() // needs url?
-const gnosis = gnosisModule({ whitelistedDomains: [/./] })
-const ambireWallet = AmbireWalletModule({
-  // walletUrl: 'https://wallet.ambire.com/sdk-login',
-  walletUrl: 'http://localhost:3000',
-  dappName: 'SigTool SDK Demo',
-  dappIconPath: 'https://sigtool.ambire.com/img/signature-validator-logo.png',
-  chainID: 1,
-  wrapperElementId: 'ambire-sdk-wrapper',
-})
-
-init({
-  wallets: [injected, walletConnect, trezor, ledger, gnosis, ambireWallet],
-  chains: NETWORKS.map((n) => ({
-    id: ethers.utils.hexValue(n.chainId),
-    label: n.name,
-    rpcUrl: n.rpc,
-    token: n.token,
-  })),
-  appMetadata: {
-    name: 'Signature Validator',
-    icon: process.env.REACT_APP_SUBFOLDER_PATH + '/img/signature-validator-logo.png',
-    description: 'Signature Validator tool',
-    recommendedInjectedWallets: [{ name: 'MetaMask', url: 'https://metamask.io' }],
-  },
-  accountCenter: {
-    desktop: {
-      enabled: false,
-    },
-  },
-})
+import { useWeb3Onboard } from '@web3-onboard/react/dist/context'
 
 const truncateAddress = (addr) => {
   return addr.substr(0, 4) + '...' + addr.substr(-4)
 }
 
+let provider
+
 const SignForm = ({ selectedForm, setShareModalLink }) => {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
+  const [{ connectedChain }] = useSetChain()
 
   const connectedWallets = useWallets()
   const [connectedAccount, setConnectedAccount] = useState(null)
-  const [connectedChain, setConnectedChain] = useState(null)
+  const { state } = useWeb3Onboard()
 
   const [error, setError] = useState(null)
 
   const [isSigning, setIsSigning] = useState(false)
   const [isLoaderDelayerActive, setIsLoaderDelayerActive] = useState(false)
   const [signature, setSignature] = useState(null)
+  const [hasDisconnected, setHasDiconnected] = useState(false)
 
   const [message, setMessage] = useState('')
   const [messageError, setMessageError] = useState(null)
@@ -101,12 +64,29 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
     [selectedMessageType]
   )
 
-  // Hack to auto connect gnosis safe app as expected behavior
   useEffect(() => {
-    if (selectedForm !== 'sign') return
-    connect({ autoSelect: 'Gnosis Safe' })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedForm])
+    if (!wallet?.provider) {
+      provider = null
+
+      const currentState = state.get()
+
+      // If the user has disconnected from safe once we should not autoconnect him again
+      if (selectedForm !== 'sign' || hasDisconnected || !currentState) return
+
+      const availableWalletLabels = currentState.walletModules.map((module) => module.label)
+
+      // Check if Safe is available, because autoselecting will fail if it's not
+      if (!availableWalletLabels.includes('Gnosis Safe')) return
+
+      connect({
+        autoSelect: {
+          label: 'Gnosis Safe',
+        },
+      })
+    } else {
+      provider = new ethers.providers.Web3Provider(wallet.provider, 'any')
+    }
+  }, [wallet, connect, selectedForm, hasDisconnected, state])
 
   // wallet sign call
   const walletSign = useCallback(
@@ -116,30 +96,38 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
         return
       }
 
-      if (wallet.provider) {
-        const provider = new ethers.providers.Web3Provider(wallet.provider, 'any')
+      if (provider) {
         const signer = provider.getUncheckedSigner()
 
         if (messageType === 'humanMessage') {
           if (wallet.label === 'Gnosis Safe') {
             return (await wallet.provider.sdk.txs.signMessage(hexlify(ethers.utils.toUtf8Bytes(message)))).safeTxHash
+            // @TODO: implement on update @web3-onboard/gnosis > @2.2
+            //   return (await wallet.instance.txs.signMessage(hexlify(ethers.utils.toUtf8Bytes(message)))).safeTxHash
           }
           return signer.signMessage(message)
         } else if (messageType === 'hexMessage') {
           if (wallet.label === 'Gnosis Safe') {
             return (await wallet.provider.sdk.txs.signMessage(message)).safeTxHash
+            // @TODO: implement on update @web3-onboard/gnosis > @2.2
+            //   return (await wallet.instance.txs.signMessage(message)).safeTxHash
           }
           return signer.signMessage(arrayify(message))
         } else if (messageType === 'typedData') {
-          if (wallet.label === 'WalletConnect') {
-            return wallet.provider.connector.signTypedData([connectedAccount.address, message])
-          } else if (wallet.label === 'Gnosis Safe') {
+          if (wallet.label === 'Gnosis Safe') {
             return (
               await wallet.provider.sdk.txs.signMessage({
                 signType: 'eth_signTypedData_v4',
                 message,
               })
             ).safeTxHash
+            // @TODO: implement on update @web3-onboard/gnosis > @2.2
+            // return (
+            //   await wallet.instance.txs.signMessage({
+            //     signType: 'eth_signTypedData_v4',
+            //     message,
+            //   })
+            // ).safeTxHash
           } else {
             const parsedMessage = JSON.parse(message)
             return signer._signTypedData(parsedMessage.domain, parsedMessage.types, parsedMessage.message)
@@ -149,7 +137,7 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
         setError('Provider not found')
       }
     },
-    [wallet, connectedAccount]
+    [wallet]
   )
 
   // sign action
@@ -303,15 +291,15 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
 
   // only filter 1 main account
   useEffect(() => {
+    if (connecting) return
+
     if (!connectedWallets || connectedWallets.length === 0) {
       setConnectedAccount(null)
-      setConnectedChain(null)
       return
     }
     const firstWallet = connectedWallets[0]
     setConnectedAccount(firstWallet?.accounts[0])
-    setConnectedChain(firstWallet?.chains[0])
-  }, [connectedWallets])
+  }, [connectedWallets, connecting])
 
   useEffect(() => {
     setSignature(null)
@@ -363,7 +351,13 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
               Connected with <b>{truncateAddress(connectedAccount.address)}</b>
               <CopyButton textToCopy={connectedAccount.address} />
             </span>
-            <button onClick={() => disconnect(wallet)} className='button-disconnect'>
+            <button
+              onClick={() => {
+                disconnect(wallet)
+                setHasDiconnected(true)
+              }}
+              className='button-disconnect'
+            >
               Disconnect Wallet
             </button>
           </>

@@ -4,6 +4,8 @@ import './App.scss'
 import { useCallback, useEffect, useState } from 'react'
 import { FaInfo, FaTimes } from 'react-icons/fa'
 import CopyButton from './components/CopyButton/CopyButton.js'
+import { Web3OnboardProvider } from '@web3-onboard/react'
+import web3Onboard from './web3-onboard.js'
 
 const THEMES = ['theme1', 'theme2', 'theme3']
 
@@ -36,90 +38,93 @@ function App() {
   }, [theme])
 
   return (
-    <div className='App'>
-      <div className={'pageContainer'}>
-        <div className={'mainTitle'}>
-          <div className={'mainTitle-logo'}>
-            <img src='img/signature-validator-logo-flat.png' alt='' />
-          </div>
-          <div className={'mainTitle-text'}>
-            <h1>
-              <span>SigTool</span> for EVM
-            </h1>
-            <div>Sign and verify regular, 721 and 1271 Ethereum signatures</div>
-          </div>
-        </div>
-        <div className={'mainContainer'}>
-          <div className={'row'}>
-            <div className='formSelector'>
-              <a
-                href={'#sign'}
-                className={selectedForm === 'sign' ? 'selected' : ''}
-                onClick={(e) => {
-                  setSelectedForm('sign')
-                  e.preventDefault()
-                }}
-              >
-                Sign
-              </a>
-              <a
-                href={'#verify'}
-                className={selectedForm === 'verify' ? 'selected' : ''}
-                onClick={(e) => {
-                  setSelectedForm('verify')
-                  e.preventDefault()
-                }}
-              >
-                Verify
-              </a>
+    <Web3OnboardProvider web3Onboard={web3Onboard}>
+      <div className='App'>
+        <div className={'pageContainer'}>
+          <div className={'mainTitle'}>
+            <div className={'mainTitle-logo'}>
+              <img src='img/signature-validator-logo-flat.png' alt='' />
             </div>
-            <SignForm selectedForm={selectedForm} setShareModalLink={setShareModalLink} />
-            <VerifyForm selectedForm={selectedForm} />
+            <div className={'mainTitle-text'}>
+              <h1>
+                <span>SigTool</span> for EVM
+              </h1>
+              <div>Sign and verify regular, 721, 1271 and 6492 Ethereum signatures</div>
+            </div>
           </div>
+          <div className={'mainContainer'}>
+            <div className={'row'}>
+              <div className='formSelector'>
+                <a
+                  href={'#sign'}
+                  className={selectedForm === 'sign' ? 'selected' : ''}
+                  onClick={(e) => {
+                    setSelectedForm('sign')
+                    e.preventDefault()
+                  }}
+                >
+                  Sign
+                </a>
+                <a
+                  href={'#verify'}
+                  className={selectedForm === 'verify' ? 'selected' : ''}
+                  onClick={(e) => {
+                    setSelectedForm('verify')
+                    e.preventDefault()
+                  }}
+                >
+                  Verify
+                </a>
+              </div>
+              <SignForm selectedForm={selectedForm} setShareModalLink={setShareModalLink} />
+              <VerifyForm selectedForm={selectedForm} />
+            </div>
+          </div>
+          <footer>
+            <a href='https://wallet.ambire.com/' target='_blank' rel='noreferrer'>
+              <img src={'img/ambireLogoMini.png'} alt='ambire-logo' />
+              Powered by Ambire Wallet
+            </a>
+            <a href='https://www.npmjs.com/package/@ambire/signature-validator' target='_blank' rel='noreferrer'>
+              <img src={'img/npmLogoMini.svg'} alt='npm-logo' />
+              @ambire/signature-validator
+            </a>
+            <a onClick={changeTheme}>
+              <img src={'img/ambireLogoMini.png'} alt='ambire-logo' /> Theme {theme + 1}
+            </a>
+          </footer>
         </div>
-        <footer>
-          <a href='https://wallet.ambire.com/' target='_blank' rel='noreferrer'>
-            <img src={'img/ambireLogoMini.png'} alt='ambire-logo' />
-            Powered by Ambire Wallet
-          </a>
-          <a href='https://www.npmjs.com/package/@ambire/signature-validator' target='_blank' rel='noreferrer'>
-            <img src={'img/npmLogoMini.svg'} alt='npm-logo' />
-            @ambire/signature-validator
-          </a>
-          <a onClick={changeTheme}>
-            <img src={'img/ambireLogoMini.png'} alt='ambire-logo' /> Theme {theme + 1}
-          </a>
-        </footer>
+        {shareModalLink && (
+          <div id='shareModal'>
+            <div className='overlay' onMouseDown={onOverlayClick}>
+              <div className='modal'>
+                <div className='modalHeader'>
+                  <span className='modalTitle'>Share this signature authenticity with this link</span>
+                  <span className='modalClose' onClick={() => setShareModalLink(null)}>
+                    <FaTimes />
+                  </span>
+                </div>
+                <div className='modalLink'>
+                  <input type='text' className='formInput' value={shareModalLink} spellCheck='false' />
+                  <CopyButton title='Copy' textToCopy={shareModalLink} />
+                </div>
+                <div className='instructions'>
+                  <span className='instructions-icon'>
+                    <FaInfo />
+                  </span>
+                  <span>
+                    This link is not stored in our servers as it contains the data of the signer, the message and the
+                    signature, to verify the message. <br />
+                    This link is only meant to share the authenticity of an Ethereum message, not to share encrypted
+                    data
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-      {shareModalLink && (
-        <div id='shareModal'>
-          <div className='overlay' onMouseDown={onOverlayClick}>
-            <div className='modal'>
-              <div className='modalHeader'>
-                <span className='modalTitle'>Share this signature authenticity with this link</span>
-                <span className='modalClose' onClick={() => setShareModalLink(null)}>
-                  <FaTimes />
-                </span>
-              </div>
-              <div className='modalLink'>
-                <input type='text' className='formInput' value={shareModalLink} spellCheck='false' />
-                <CopyButton title='Copy' textToCopy={shareModalLink} />
-              </div>
-              <div className='instructions'>
-                <span className='instructions-icon'>
-                  <FaInfo />
-                </span>
-                <span>
-                  This link is not stored in our servers as it contains the data of the signer, the message and the
-                  signature, to verify the message. <br />
-                  This link is only meant to share the authenticity of an Ethereum message, not to share encrypted data
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+    </Web3OnboardProvider>
   )
 }
 
