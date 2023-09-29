@@ -34,7 +34,7 @@ const ambireWallet = AmbireWalletModule({
   dappName: 'SigTool SDK Demo',
   dappIconPath: 'https://sigtool.ambire.com/img/signature-validator-logo.png',
   chainID: 1,
-  wrapperElementId: 'ambire-sdk-wrapper',
+  // wrapperElementId: 'ambire-sdk-wrapper',
 })
 
 export default init({
