@@ -7,6 +7,8 @@ import ledgerModule from '@web3-onboard/ledger'
 import injectedModule from '@web3-onboard/injected-wallets'
 import trezorModule from '@web3-onboard/trezor'
 import gnosisModule from '@web3-onboard/gnosis'
+import { AmbireWalletModule } from '@ambire/login-sdk-web3-onboard'
+
 const WC_PROJECT_ID = 'd98522bddb36e73acae903da02b45fd1'
 
 const WC_OPTIONS = {
@@ -26,12 +28,20 @@ const trezor = trezorModule({
   email: 'contactus@ambire.com',
 })
 const gnosis = gnosisModule({ whitelistedDomains: [/./] })
+const ambireWallet = AmbireWalletModule({
+  walletUrl: 'https://wallet.ambire.com/sdk-login',
+  // walletUrl: 'http://localhost:3000',
+  dappName: 'SigTool SDK Demo',
+  dappIconPath: 'https://sigtool.ambire.com/img/signature-validator-logo.png',
+  chainID: 1,
+  // wrapperElementId: 'ambire-sdk-wrapper',
+})
 
 export default init({
   connect: {
     autoConnectAllPreviousWallet: true,
   },
-  wallets: [injected, walletConnect, trezor, ledger, gnosis],
+  wallets: [injected, walletConnect, trezor, ledger, gnosis, ambireWallet],
   chains: NETWORKS.map((n) => ({
     id: ethers.utils.hexValue(n.chainId),
     label: n.name,
