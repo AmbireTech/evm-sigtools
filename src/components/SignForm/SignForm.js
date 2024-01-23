@@ -160,7 +160,6 @@ const SignForm = ({ selectedForm, setShareModalLink }) => {
         setIsSigning(false)
       })
       .then((signature) => {
-        console.log('signature', signature)
         setSignature(signature)
         setIsSigning(false)
       })
