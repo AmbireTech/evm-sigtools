@@ -1,10 +1,10 @@
 import NETWORKS from '../../consts/networks.js'
 import MESSAGE_TYPES from '../../consts/messageTypes.js'
 import DropDown from '../../components/DropDown/DropDown'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { verifyMessage } from '@ambire/signature-validator'
 import { ethers, providers } from 'ethers'
-import { FaCheck, FaTimes, FaInfo } from 'react-icons/fa'
+import { FaCheck, FaTimes } from 'react-icons/fa'
 import './VerifyForm.scss'
 import { CgSpinnerTwoAlt } from 'react-icons/cg'
 import { scroller } from 'react-scroll'
@@ -13,6 +13,7 @@ import 'tippy.js/dist/tippy.css'
 import { getMessagePlaceholder, validateMessage } from '../../helpers/messages'
 
 import { TiWarningOutline } from 'react-icons/ti'
+import InfoAlert from '../InfoAlert/InfoAlert.js'
 
 const VerifyForm = ({ selectedForm }) => {
   const [error, setError] = useState(null)
@@ -31,7 +32,7 @@ const VerifyForm = ({ selectedForm }) => {
 
   const [message, setMessage] = useState('')
 
-  const [selectedNetwork, setSelectedNetwork] = useState(1)
+  const [selectedNetwork, setSelectedNetwork] = useState(null)
 
   const [isVerifyFocused, setIsVerifyFocused] = useState(false)
 
@@ -138,6 +139,16 @@ const VerifyForm = ({ selectedForm }) => {
     }, 400)
   }, [isLoaderDelayerActive, isVerifying, message, selectedMessageType, selectedNetwork, signature, signer])
 
+  const selectedNetworkTitle = useMemo(() => {
+    if (!selectedNetwork) return 'Select Network'
+
+    return 'EIP-1271 Network: ' + NETWORKS.find((n) => n.chainId === selectedNetwork).name
+  }, [selectedNetwork])
+
+  const isDisabled = useMemo(() => {
+    return !selectedNetwork || isVerifying || isLoaderDelayerActive
+  }, [isLoaderDelayerActive, isVerifying, selectedNetwork])
+
   // "real time" message validation
   useEffect(() => {
     onMessageChange(message)
@@ -215,18 +226,11 @@ const VerifyForm = ({ selectedForm }) => {
     }
   }, [])
 
-  if (selectedForm !== 'verify') return <></>
+  if (selectedForm !== 'verify') return null
 
   return (
     <div className='verifyForm'>
-      <div className='instructions'>
-        <span className='instructions-icon'>
-          <FaInfo />
-        </span>
-        <span className='instructions-text'>
-          Use this tool to verify the authenticity of Ethereum messages with the wallet that signed it
-        </span>
-      </div>
+      <InfoAlert text='Use this tool to verify the authenticity of Ethereum messages with the wallet that signed it' />
 
       {error && !isLoaderDelayerActive && (
         <div className='notification danger mainError' id='error'>
@@ -324,13 +328,23 @@ const VerifyForm = ({ selectedForm }) => {
         </div>
       </div>
 
-      <div className='formInputBlock'>
+      <InfoAlert text="If the signature comes from a Smart Account, please make sure to select the same network on which you've produced the signature." />
+      <div className='formInputBlock selectNetwork'>
         <DropDown
           id='dd-networks'
           title={
-            selectedNetwork
-              ? 'EIP-1271 Network: ' + NETWORKS.find((n) => n.chainId === selectedNetwork).name
-              : 'Network (for EIP-1271 checks)'
+            <div className='selectedNetwork'>
+              <div>{selectedNetworkTitle}</div>
+              {!selectedNetwork && (
+                <>
+                  <Tippy content='Please select Network' placement={'left'} className={'danger left'}>
+                    <div className='selectedNetworkError danger'>
+                      <TiWarningOutline />
+                    </div>
+                  </Tippy>
+                </>
+              )}
+            </div>
           }
           closeOnClick={true}
           onOpen={() => {
@@ -368,8 +382,9 @@ const VerifyForm = ({ selectedForm }) => {
           id='verifyButton'
           className={`${isVerifying || isLoaderDelayerActive ? 'loading' : ''}${
             isVerifyFocused ? ' focus' : isVerifyFocused === false ? ' unfocus' : ''
-          }`}
+          } ${isDisabled ? 'disabled' : ''}`}
           onClick={verify}
+          disabled={isDisabled}
         >
           {isVerifying || isLoaderDelayerActive ? <CgSpinnerTwoAlt className='spin' /> : <span>Verify</span>}
         </button>
