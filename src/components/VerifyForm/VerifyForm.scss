@@ -56,9 +56,11 @@
       align-items: center;
 
       svg {
-        color: #ce1251;
-        width: 20px;
-        height: 20px;
+        @include themify() {
+          color: themeprop('dangerColor');
+          width: 20px;
+          height: 20px;
+        }
       }
     }
 
