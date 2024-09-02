@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "https://sigtool.ambire.com/static/css/main.cdde7a19.css",
-    "main.js": "https://sigtool.ambire.com/static/js/main.e4e048c3.js",
+    "main.css": "https://sigtool.ambire.com/static/css/main.ad2ea69e.css",
+    "main.js": "https://sigtool.ambire.com/static/js/main.3f896dc6.js",
     "static/js/437.74a3a545.chunk.js": "https://sigtool.ambire.com/static/js/437.74a3a545.chunk.js",
     "static/js/5418.f9b9d7dd.chunk.js": "https://sigtool.ambire.com/static/js/5418.f9b9d7dd.chunk.js",
     "static/js/8380.523ab144.chunk.js": "https://sigtool.ambire.com/static/js/8380.523ab144.chunk.js",
@@ -147,8 +147,8 @@
     "static/media/triBg2.svg": "https://sigtool.ambire.com/static/media/triBg2.7f66f0661e72223fe638.svg",
     "static/media/triBg.svg": "https://sigtool.ambire.com/static/media/triBg.8515cf7c3e14d9f1dd3b.svg",
     "index.html": "https://sigtool.ambire.com/index.html",
-    "main.cdde7a19.css.map": "https://sigtool.ambire.com/static/css/main.cdde7a19.css.map",
-    "main.e4e048c3.js.map": "https://sigtool.ambire.com/static/js/main.e4e048c3.js.map",
+    "main.ad2ea69e.css.map": "https://sigtool.ambire.com/static/css/main.ad2ea69e.css.map",
+    "main.3f896dc6.js.map": "https://sigtool.ambire.com/static/js/main.3f896dc6.js.map",
     "437.74a3a545.chunk.js.map": "https://sigtool.ambire.com/static/js/437.74a3a545.chunk.js.map",
     "5418.f9b9d7dd.chunk.js.map": "https://sigtool.ambire.com/static/js/5418.f9b9d7dd.chunk.js.map",
     "8380.523ab144.chunk.js.map": "https://sigtool.ambire.com/static/js/8380.523ab144.chunk.js.map",
@@ -231,7 +231,7 @@
     "5327.a80472a7.chunk.js.map": "https://sigtool.ambire.com/static/js/5327.a80472a7.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.cdde7a19.css",
-    "static/js/main.e4e048c3.js"
+    "static/css/main.ad2ea69e.css",
+    "static/js/main.3f896dc6.js"
   ]
 }
