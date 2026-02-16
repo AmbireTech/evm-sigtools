@@ -30,9 +30,38 @@
     min-height: 162px;
   }
 
+  .formInputBlock.selectNetwork {
+    padding-top: 10px;
+  }
+
   #dd-networks {
     .menu-item {
       display: flex;
+    }
+    .title {
+      flex: 1;
+    }
+    .separator {
+      display: none;
+    }
+    .selectedNetwork {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex: 1;
+    }
+
+    .selectedNetworkError {
+      display: flex;
+      align-items: center;
+
+      svg {
+        @include themify() {
+          color: themeprop('dangerColor');
+          width: 20px;
+          height: 20px;
+        }
+      }
     }
 
     .networkIcon {
@@ -66,6 +95,11 @@
         background: themeprop('buttonColor');
         //background-image: linear-gradient(90deg, themeprop('buttonColor') 0%, themeprop('buttonColorEnd') 100%);
       }
+    }
+
+    &.disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
   }
 }

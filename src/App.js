@@ -81,7 +81,7 @@ function App() {
             </div>
           </div>
           <footer>
-            <a href='https://wallet.ambire.com/' target='_blank' rel='noreferrer'>
+            <a href='https://www.ambire.com/' target='_blank' rel='noreferrer'>
               <img src={'img/ambireLogoMini.png'} alt='ambire-logo' />
               Powered by Ambire Wallet
             </a>
